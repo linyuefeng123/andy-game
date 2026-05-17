@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../../store/useGameStore';
 import { playSound } from '../../utils/audio';
+import { preloadFloorComponent } from '../../floors/_registry';
 import styles from './index.module.css';
 
 type ElevatorState = 'closing' | 'moving' | 'opening' | 'arrived';
@@ -19,6 +20,7 @@ export default function ElevatorPage() {
 
   useEffect(() => {
     playSound('ding');
+    preloadFloorComponent(targetFloor);
 
     // Closing doors
     const closeTimer = setTimeout(() => {

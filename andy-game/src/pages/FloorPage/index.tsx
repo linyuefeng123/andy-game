@@ -1,10 +1,10 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGameStore } from '../../store/useGameStore';
 import type { FloorReward } from '../../store/useGameStore';
 import ErrorBoundary from '../../components/ErrorBoundary';
-import { getFloorComponent, getFloorMeta, isFloorImplemented, randomHelper, HELPER_CHARACTERS, type HelperCharacter } from '../../floors/_registry';
+import { getFloorComponent, preloadFloorComponent, getFloorMeta, isFloorImplemented, randomHelper, HELPER_CHARACTERS, type HelperCharacter } from '../../floors/_registry';
 import styles from './index.module.css';
 
 const MAX_HELP = 3;
@@ -20,6 +20,12 @@ export default function FloorPage() {
 
   const [helperChar] = useState<HelperCharacter>(randomHelper);
   const [helpRemaining, setHelpRemaining] = useState(MAX_HELP);
+
+  useEffect(() => {
+    if (isFloorImplemented(floorNumber)) {
+      preloadFloorComponent(floorNumber);
+    }
+  }, [floorNumber]);
 
   const handleExit = () => {
     navigate('/lobby', { state: { fromFloor: true } });
