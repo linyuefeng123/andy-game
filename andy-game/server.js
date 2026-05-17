@@ -24,6 +24,8 @@ const STATIC_EXTS = new Set(Object.keys(MIME));
 const HAS_HASH_RE = /-[a-zA-Z0-9]{8,}\./;
 
 const server = createServer((req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
   let urlPath = req.url.split('?')[0];
   let filePath = join(DIST, urlPath === '/' ? 'index.html' : urlPath);
   const ext = extname(filePath);

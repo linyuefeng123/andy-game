@@ -1,7 +1,8 @@
+import { useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGameStore } from '../../store/useGameStore';
-import { getFloorMeta, IMPLEMENTED_FLOORS } from '../../floors/_registry';
+import { getFloorMeta, IMPLEMENTED_FLOORS, preloadFloorComponent } from '../../floors/_registry';
 import styles from './index.module.css';
 
 const ALL_FLOORS = IMPLEMENTED_FLOORS;
@@ -10,10 +11,31 @@ export default function FloorMapPage() {
   const navigate = useNavigate();
   const language = useGameStore((s) => s.language);
   const completedFloors = useGameStore((s) => s.completedFloors);
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleFloorClick = (floorNumber: number) => {
     navigate(`/floor/${floorNumber}`);
   };
+
+  // Preload on hover with debounce — 150ms to avoid rapid-fire on scroll
+  const handleFloorHover = useCallback((floorNumber: number) => {
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    hoverTimerRef.current = setTimeout(() => {
+      preloadFloorComponent(floorNumber);
+    }, 150);
+  }, []);
+
+  const handleFloorLeave = useCallback(() => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+  }, []);
+
+  // Preload on touch start for mobile
+  const handleTouchStart = useCallback((floorNumber: number) => {
+    preloadFloorComponent(floorNumber);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -39,6 +61,9 @@ export default function FloorMapPage() {
               key={floorNum}
               className={styles.floorRow}
               onClick={() => handleFloorClick(floorNum)}
+              onMouseEnter={() => handleFloorHover(floorNum)}
+              onMouseLeave={handleFloorLeave}
+              onTouchStart={() => handleTouchStart(floorNum)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

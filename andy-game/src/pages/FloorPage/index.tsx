@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGameStore } from '../../store/useGameStore';
@@ -20,6 +20,15 @@ export default function FloorPage() {
 
   const [helperChar] = useState<HelperCharacter>(randomHelper);
   const [helpRemaining, setHelpRemaining] = useState(MAX_HELP);
+
+  // Preload floor component synchronously on first render so the import
+  // starts before useEffect fires — gives a head start when arriving from
+  // FloorMapPage (hover preloaded) or ElevatorPage (animation preloaded).
+  const hasPreloaded = useRef(false);
+  if (!hasPreloaded.current && isFloorImplemented(floorNumber)) {
+    hasPreloaded.current = true;
+    preloadFloorComponent(floorNumber);
+  }
 
   useEffect(() => {
     if (isFloorImplemented(floorNumber)) {
@@ -114,6 +123,27 @@ export default function FloorPage() {
             {language === 'zh' ? '🚪 进入房间' : '🚪 Enter Room'}
           </button>
         </motion.div>
+        {/* Hidden Suspense boundary to warm the lazy component while
+            the user reads the story — eliminates the loading spinner
+            when they tap "Enter Room". */}
+        <div style={{ display: 'none' }} aria-hidden="true">
+          {FloorComponent && (
+            <ErrorBoundary>
+              <Suspense fallback={null}>
+                <FloorComponent
+                  key={`preload-${replayKey}`}
+                  onExit={() => {}}
+                  onComplete={() => {}}
+                  helperChar={helperChar}
+                  helpRemaining={helpRemaining}
+                  onHelpUsed={() => {}}
+                  onConcede={() => {}}
+                  onReplay={() => {}}
+                />
+              </Suspense>
+            </ErrorBoundary>
+          )}
+        </div>
       </div>
     );
   }

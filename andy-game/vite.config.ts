@@ -14,7 +14,8 @@ export default defineConfig({
         manualChunks(id) {
           if (id.includes('node_modules')) {
             if (id.includes('framer-motion')) return 'vendor-motion';
-            if (id.includes('react-dom') || id.includes('react/') || id.includes('react-router-dom')) return 'vendor-react';
+            if (id.includes('react-router') || id.includes('@remix-run')) return 'vendor-router';
+            if (id.includes('react-dom') || id.includes('/react/')) return 'vendor-react';
             if (id.includes('zustand')) return 'vendor-zustand';
             return 'vendor';
           }
@@ -24,5 +25,11 @@ export default defineConfig({
     cssCodeSplit: true,
     target: 'es2020',
     reportCompressedSize: false,
+    modulePreload: {
+      resolveDependencies(filename, deps) {
+        // Don't preload framer-motion chunk — it's not needed for first paint
+        return deps.filter(d => !d.includes('vendor-motion'));
+      },
+    },
   },
 })

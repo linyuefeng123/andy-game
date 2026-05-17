@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../../store/useGameStore';
@@ -17,10 +17,17 @@ export default function ElevatorPage() {
 
   const [state, setState] = useState<ElevatorState>('closing');
   const [displayNumber, setDisplayNumber] = useState(1);
+  const hasPreloaded = useRef(false);
+
+  // Preload floor component as early as possible — before any animation
+  // Use a ref so we only preload once even if the component re-renders
+  if (!hasPreloaded.current) {
+    hasPreloaded.current = true;
+    preloadFloorComponent(targetFloor);
+  }
 
   useEffect(() => {
     playSound('ding');
-    preloadFloorComponent(targetFloor);
 
     // Closing doors
     const closeTimer = setTimeout(() => {

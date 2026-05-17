@@ -1,15 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGameStore, AP_THRESHOLDS } from '../../store/useGameStore';
 import { useElevator } from '../../hooks/useElevator';
 import { playSound } from '../../utils/audio';
 import AndyAvatar from '../../components/AndyAvatar';
-import DailyRewardModal from '../../components/DailyRewardModal';
-import LevelUpCeremony from '../../components/LevelUpCeremony';
-import CompletionCeremony from '../../components/CompletionCeremony';
-import MysteryBox from '../../components/MysteryBox';
 import styles from './index.module.css';
+
+const DailyRewardModal = lazy(() => import('../../components/DailyRewardModal'));
+const LevelUpCeremony = lazy(() => import('../../components/LevelUpCeremony'));
+const CompletionCeremony = lazy(() => import('../../components/CompletionCeremony'));
+const MysteryBox = lazy(() => import('../../components/MysteryBox'));
 
 function getTodayISO(): string {
   return new Date().toISOString().slice(0, 10);
@@ -186,10 +187,10 @@ export default function LobbyPage() {
       </div>
 
       {/* Overlays */}
-      {showDailyReward && <DailyRewardModal onClose={handleDailyRewardClose} />}
-      {showLevelUpCeremony && <LevelUpCeremony onComplete={handleLevelUpComplete} />}
-      {showCompletionCeremony && <CompletionCeremony onComplete={handleCompletionComplete} />}
-      {showMysteryBox && <MysteryBox onClose={handleMysteryBoxClose} />}
+      <Suspense>{showDailyReward && <DailyRewardModal onClose={handleDailyRewardClose} />}</Suspense>
+      <Suspense>{showLevelUpCeremony && <LevelUpCeremony onComplete={handleLevelUpComplete} />}</Suspense>
+      <Suspense>{showCompletionCeremony && <CompletionCeremony onComplete={handleCompletionComplete} />}</Suspense>
+      <Suspense>{showMysteryBox && <MysteryBox onClose={handleMysteryBoxClose} />}</Suspense>
     </div>
   );
 }

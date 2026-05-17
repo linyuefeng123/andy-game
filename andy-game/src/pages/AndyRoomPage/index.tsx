@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../../store/useGameStore';
-import { getFloorMeta } from '../../floors/_registry';
+import { getFloorMeta } from '../../floors/_floorMeta';
 import type { FloorReward } from '../../store/useGameStore';
 import styles from './index.module.css';
 
