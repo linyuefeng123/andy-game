@@ -1,0 +1,268 @@
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0 var(--space-xs);
+}
+
+/* AI area */
+.aiArea {
+  text-align: center;
+  width: 100%;
+}
+
+.aiLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+.aiCards {
+  display: flex;
+  gap: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cardBack {
+  font-size: 16px;
+  margin: 0 -6px;
+  opacity: 0.6;
+}
+
+/* Game log */
+.gameLog {
+  width: 100%;
+  max-height: 64px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.logEntry {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  padding: 2px 0;
+}
+
+/* Play info */
+.playInfo {
+  height: 24px;
+  text-align: center;
+}
+
+.playType {
+  font-size: var(--font-size-md);
+  color: var(--color-mint);
+  font-weight: 700;
+}
+
+.invalidPlay {
+  font-size: var(--font-size-sm);
+  color: var(--color-coral);
+}
+
+/* Player hand - scrollable on small screens */
+.playerArea {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--space-xs) 0;
+}
+
+.playerCards {
+  display: flex;
+  gap: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+  min-height: 72px;
+}
+
+.card {
+  width: clamp(34px, 8vw, 42px);
+  height: clamp(48px, 11vw, 58px);
+  background: #f0f0e8;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 -2px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color var(--transition-fast);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cardSelected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 8px rgba(255, 217, 61, 0.4);
+  z-index: 1;
+}
+
+.cardHelpHint {
+  border-color: var(--color-sky);
+  box-shadow: 0 0 10px rgba(77, 150, 255, 0.5);
+  animation: pulse-glow 0.8s ease-in-out infinite;
+}
+
+.redCard {
+  color: #cc0000;
+}
+
+.blackCard {
+  color: #1a1a2e;
+}
+
+.cardSuit {
+  font-size: clamp(10px, 2.5vw, 12px);
+  line-height: 1;
+}
+
+.cardRank {
+  font-size: clamp(13px, 3.5vw, 16px);
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Action row */
+.actionRow {
+  display: flex;
+  gap: var(--space-md);
+  width: 100%;
+  justify-content: center;
+}
+
+.passButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+}
+
+.passButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.playButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+}
+
+.playButton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 70px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.concedeButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(255, 107, 107, 0.2);
+  border: 2px solid var(--color-coral);
+  color: var(--color-coral);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+}
+
+.claimWinButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  box-shadow: var(--shadow-glow);
+}
+
+/* Win overlay */
+.winOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winContent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  padding: var(--space-xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+  margin: var(--space-md);
+}
+
+.winEmoji {
+  font-size: 64px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.winText {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}

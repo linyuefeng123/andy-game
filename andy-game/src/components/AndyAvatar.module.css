@@ -1,0 +1,113 @@
+.avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.head {
+  width: 60%;
+  aspect-ratio: 1;
+  background: #ffd5a0;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.hair {
+  position: absolute;
+  top: -2px;
+  left: 10%;
+  right: 10%;
+  height: 40%;
+  background: #2d2d44;
+  border-radius: 50% 50% 0 0;
+}
+
+.eyes {
+  display: flex;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.eye {
+  width: 6px;
+  height: 6px;
+  background: #2d2d44;
+  border-radius: 50%;
+}
+
+.eyeClosed {
+  height: 2px;
+  border-radius: 1px;
+}
+
+.mouth {
+  width: 8px;
+  height: 4px;
+  border-bottom: 2px solid #e08080;
+  border-radius: 0 0 50% 50%;
+  position: relative;
+  z-index: 1;
+}
+
+.shirt {
+  width: 55%;
+  height: 30%;
+  background: var(--color-sky);
+  border-radius: 0 0 30% 30%;
+}
+
+.arm {
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  width: 6px;
+  height: 20px;
+  background: #ffd5a0;
+  border-radius: 3px;
+  transform-origin: top center;
+}
+
+.zzz {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  font-size: 12px;
+  color: var(--color-lavender);
+  font-weight: 700;
+}
+
+/* Pose animations */
+.idle {
+  animation: float 3s ease-in-out infinite;
+}
+
+.wave .arm {
+  display: block;
+}
+
+.walk {
+  animation: walk 0.6s ease-in-out infinite;
+}
+
+.sleep {
+  animation: none;
+}
+
+@keyframes walk {
+  0%, 100% { transform: translateX(-2px); }
+  50% { transform: translateX(2px); }
+}

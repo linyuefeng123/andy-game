@@ -1,0 +1,216 @@
+.container {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.gameInfo {
+  text-align: center;
+}
+
+.turnInfo {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+}
+
+.boardWrapper {
+  background: var(--color-board);
+  border-radius: var(--border-radius);
+  padding: var(--space-xs);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: var(--color-board-line);
+}
+
+.cell {
+  width: clamp(36px, calc((100vw - 40px) / 7), 48px);
+  height: clamp(36px, calc((100vw - 40px) / 7), 48px);
+  background: #3a5a3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: background var(--transition-fast);
+}
+
+.cell:hover {
+  background: #4a6a4a;
+}
+
+.waterCell {
+  composes: cell;
+  background: #1a3a5a;
+}
+
+.waterCell:hover {
+  background: #2a4a6a;
+}
+
+.denCell {
+  composes: cell;
+  background: #5a3a1a;
+}
+
+.trapCell {
+  composes: cell;
+  background: #4a3a2a;
+}
+
+.selectedCell {
+  background: rgba(255, 217, 61, 0.3) !important;
+  box-shadow: inset 0 0 10px rgba(255, 217, 61, 0.5);
+}
+
+.validTarget {
+  background: rgba(107, 203, 119, 0.2) !important;
+}
+
+.piece {
+  font-size: clamp(18px, 5vw, 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.player1 {
+  filter: brightness(1.1);
+}
+
+.player2 {
+  filter: hue-rotate(180deg) brightness(0.9);
+}
+
+.rankLabel {
+  font-size: 7px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+}
+
+.denLabel {
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+.moveIndicator {
+  font-size: 20px;
+  color: var(--color-mint);
+  font-weight: 900;
+}
+
+.hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 0 var(--space-sm);
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 70px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.helpHintCell {
+  background: rgba(77, 150, 255, 0.3) !important;
+  box-shadow: inset 0 0 8px rgba(77, 150, 255, 0.5);
+}
+
+.concedeButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(255, 107, 107, 0.2);
+  border: 2px solid var(--color-coral);
+  color: var(--color-coral);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+}
+
+.claimWinButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  box-shadow: var(--shadow-glow);
+}
+
+.winOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winContent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  padding: var(--space-xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+  margin: var(--space-md);
+}
+
+.winEmoji {
+  font-size: 64px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.winText {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}

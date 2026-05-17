@@ -1,0 +1,254 @@
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  min-height: 300px;
+}
+
+/* Progress dots */
+.progressRow {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.dotDone {
+  background: var(--color-mint);
+}
+
+.dotCurrent {
+  background: var(--color-primary);
+  box-shadow: 0 0 8px rgba(255, 217, 61, 0.5);
+  transform: scale(1.3);
+}
+
+/* Question area */
+.questionArea {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.questionCard {
+  background: linear-gradient(135deg, var(--color-board), var(--color-sky-top));
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-lg) var(--space-xl);
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.questionText {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.questionSub {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+}
+
+/* Option grid */
+.optionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.option {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-text);
+  min-height: var(--touch-target);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  word-break: break-all;
+}
+
+.option:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--color-primary);
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.optionCorrect {
+  composes: option;
+  background: rgba(107, 203, 119, 0.3);
+  border-color: var(--color-mint);
+  color: var(--color-mint);
+}
+
+.optionWrong {
+  composes: option;
+  background: rgba(255, 107, 107, 0.3);
+  border-color: var(--color-coral);
+  color: var(--color-coral);
+}
+
+.optionEliminated {
+  composes: option;
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.15);
+  cursor: default;
+  text-decoration: line-through;
+}
+
+/* Hint */
+.hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* Celebration checkmark */
+.celebration {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 64px;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* Result card */
+.resultCard {
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-2xl);
+  text-align: center;
+  box-shadow: var(--shadow-glow);
+}
+
+.resultEmoji {
+  font-size: 80px;
+  margin-bottom: var(--space-md);
+}
+
+.resultTitle {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.starRow {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-md);
+}
+
+.star {
+  font-size: 36px;
+  transition: transform var(--transition-normal);
+}
+
+.starActive {
+  transform: scale(1.1);
+}
+
+.starInactive {
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.scoreText {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-lg);
+}
+
+.finishButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}
+
+/* Action buttons */
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  margin-top: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.concedeButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: rgba(255, 107, 107, 0.2);
+  border: 2px solid var(--color-coral);
+  color: var(--color-coral);
+  min-height: var(--touch-target);
+  min-width: 100px;
+  font-weight: 700;
+}
+
+.claimWinButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  min-height: var(--touch-target);
+  min-width: 100px;
+  font-weight: 700;
+  box-shadow: var(--shadow-glow);
+}

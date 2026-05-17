@@ -10,11 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "framer-motion": "^12.38.0",
+    "howler": "^2.2.4",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.6",
+    "react-router-dom": "^7.15.1",
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/howler": "^2.2.12",
     "@types/node": "^24.12.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

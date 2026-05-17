@@ -1,0 +1,58 @@
+:root {
+  /* Pastel backgrounds */
+  --color-bg: #1a1a2e;
+  --color-sky-top: #16213e;
+  --color-sky-bottom: #0f3460;
+  --color-cloud: #e8d5f5;
+  --color-cloud-light: #f0e6fa;
+
+  /* Accent colors */
+  --color-primary: #ffd93d;
+  --color-coral: #ff6b6b;
+  --color-mint: #6bcb77;
+  --color-sky: #4d96ff;
+  --color-lavender: #9b72cf;
+  --color-peach: #ffb4a2;
+
+  /* Text */
+  --color-text: #ffffff;
+  --color-text-muted: #a0a0c0;
+  --color-text-dark: #2d2d44;
+
+  /* Game board */
+  --color-board: #2a2a4a;
+  --color-board-line: #4a4a6a;
+  --color-black-stone: #1a1a2e;
+  --color-white-stone: #f0f0f0;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* Sizing */
+  --touch-target: 64px;
+  --border-radius: 16px;
+  --border-radius-sm: 8px;
+  --border-radius-lg: 24px;
+
+  /* Typography */
+  --font-primary: 'ZCOOL KuaiLe', 'Nunito', system-ui, sans-serif;
+  --font-size-sm: 14px;
+  --font-size-md: 18px;
+  --font-size-lg: 24px;
+  --font-size-xl: 32px;
+  --font-size-2xl: 48px;
+
+  /* Animation */
+  --transition-fast: 150ms;
+  --transition-normal: 300ms;
+  --transition-slow: 500ms;
+
+  /* Shadows */
+  --shadow-glow: 0 0 20px rgba(255, 217, 61, 0.3);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3);
+}

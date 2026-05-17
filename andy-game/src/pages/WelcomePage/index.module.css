@@ -1,0 +1,104 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-lg);
+}
+
+.stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.content {
+  text-align: center;
+  z-index: 1;
+  max-width: 400px;
+  width: 100%;
+}
+
+.cloudHouse {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--space-lg);
+}
+
+.houseEmoji {
+  font-size: clamp(56px, 18vw, 80px);
+  display: block;
+  animation: float 3s ease-in-out infinite;
+}
+
+.cloudEmoji {
+  position: absolute;
+  font-size: 40px;
+  top: -20px;
+  right: -30px;
+  animation: float 3s ease-in-out infinite 0.5s;
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+  text-shadow: 0 0 20px rgba(255, 217, 61, 0.4);
+}
+
+.subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2xl);
+}
+
+.selectButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  background: linear-gradient(135deg, var(--color-lavender), var(--color-sky));
+  padding: var(--space-lg) var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  width: 100%;
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-normal);
+}
+
+.selectButton:hover {
+  box-shadow: var(--shadow-glow);
+}
+
+.characterIcon {
+  font-size: clamp(48px, 14vw, 64px);
+}
+
+.characterName {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.selectText {
+  font-size: var(--font-size-md);
+  color: var(--color-primary);
+}
+
+.langButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}

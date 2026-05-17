@@ -1,0 +1,210 @@
+.container {
+  min-height: 100vh;
+  padding: var(--space-md);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.backButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: var(--touch-target);
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+}
+
+.headerStats {
+  font-size: var(--font-size-md);
+}
+
+/* Summary */
+.summary {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.summaryCard {
+  flex: 1;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+}
+
+.summaryNumber {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-primary);
+  display: block;
+}
+
+.summaryLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  display: block;
+  margin-top: var(--space-xs);
+}
+
+/* Section */
+.section {
+  margin-bottom: var(--space-xl);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+  margin-bottom: var(--space-md);
+}
+
+/* Reward grid */
+.rewardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-md);
+}
+
+.rewardCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(155, 114, 207, 0.2), rgba(77, 150, 255, 0.2));
+  border: 1px solid rgba(255, 217, 61, 0.3);
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  gap: var(--space-xs);
+}
+
+.rewardEmoji {
+  font-size: 40px;
+}
+
+.rewardName {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.rewardDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* Floor list */
+.floorList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.floorRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  min-height: 56px;
+}
+
+.floorRow.clickable {
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.floorRow.clickable:hover {
+  background: rgba(255, 217, 61, 0.08);
+  border-color: rgba(255, 217, 61, 0.3);
+}
+
+.floorRow.clickable:active {
+  transform: scale(0.98);
+}
+
+.floorRow.locked {
+  opacity: 0.4;
+}
+
+.floorLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.floorNum {
+  font-size: var(--font-size-md);
+  font-weight: 800;
+  color: var(--color-primary);
+  min-width: 40px;
+}
+
+.floorName {
+  font-size: var(--font-size-md);
+}
+
+.floorRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.lockIcon {
+  font-size: 20px;
+}
+
+.statusNew {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-mint);
+  background: rgba(107, 203, 119, 0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.statusBuild {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.playButton {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+.playAgain {
+  font-size: var(--font-size-sm);
+  color: var(--color-sky);
+  background: rgba(77, 150, 255, 0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.starDisplay {
+  font-size: var(--font-size-sm);
+}
+
+.rewardBadge {
+  font-size: 24px;
+}

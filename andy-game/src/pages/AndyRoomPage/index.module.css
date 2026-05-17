@@ -1,0 +1,245 @@
+.container {
+  min-height: 100vh;
+  padding: var(--space-md);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.backButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: var(--touch-target);
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+}
+
+.headerStats {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+}
+
+/* Room scene */
+.room {
+  position: relative;
+  background: linear-gradient(180deg, #2a1f4e 0%, #1e1638 50%, #3d2b1f 50%, #2d1f15 100%);
+  border-radius: var(--border-radius-lg);
+  min-height: 420px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.wall {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 217, 61, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(155, 114, 207, 0.04) 0%, transparent 40%);
+}
+
+/* Andy character */
+.andy {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  text-align: center;
+  z-index: 2;
+}
+
+.andyEmoji {
+  font-size: 56px;
+  display: block;
+}
+
+.andyName {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Shelves */
+.shelves {
+  position: relative;
+  padding: 24px 20px;
+  z-index: 1;
+}
+
+.shelf {
+  position: relative;
+  margin-bottom: var(--space-xl);
+}
+
+.shelfBoard {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(180deg, #8b6914, #6b4f10);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.shelfBoard::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #a07818;
+}
+
+.shelfItems {
+  display: flex;
+  gap: var(--space-md);
+  padding: 0 8px 16px;
+  overflow-x: auto;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.shelfItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  min-width: 72px;
+  cursor: pointer;
+}
+
+.itemEmoji {
+  font-size: 40px;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.itemLabel {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* Empty state */
+.emptyRoom {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+}
+
+.emptyEmoji {
+  font-size: 64px;
+  opacity: 0.5;
+}
+
+.emptyText {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 0 var(--space-xl);
+}
+
+/* Floor decoration */
+.floorDecor {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2xl);
+  z-index: 2;
+}
+
+.decorItem {
+  font-size: 32px;
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: var(--space-lg);
+}
+
+.modalContent {
+  text-align: center;
+  background: linear-gradient(135deg, #2a1f4e, #1e1638);
+  padding: var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 0 40px rgba(255, 217, 61, 0.15);
+  border: 2px solid rgba(255, 217, 61, 0.2);
+  max-width: 340px;
+  width: 100%;
+}
+
+.modalEmoji {
+  font-size: 72px;
+  display: block;
+  margin-bottom: var(--space-md);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.modalName {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.modalDesc {
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  margin-bottom: var(--space-md);
+}
+
+.modalOrigin {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-lg);
+  background: rgba(255, 255, 255, 0.06);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--border-radius-sm);
+}
+
+.modalClose {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: var(--touch-target);
+}

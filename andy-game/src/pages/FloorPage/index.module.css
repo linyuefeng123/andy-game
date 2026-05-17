@@ -1,0 +1,193 @@
+.container {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-sm);
+}
+
+.floorHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: var(--space-md);
+}
+
+.floorTitle {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+
+.floorNumber {
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.floorName {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+}
+
+.backButton, .skipButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gameArea {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.loading {
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary);
+}
+
+/* Construction placeholder */
+.construction {
+  text-align: center;
+  padding: var(--space-2xl);
+}
+
+.constructionEmoji {
+  font-size: 80px;
+  display: block;
+  margin-bottom: var(--space-lg);
+  animation: float 3s ease-in-out infinite;
+}
+
+.constructionTitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.constructionText {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xl);
+}
+
+/* Story card */
+.storyCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-2xl);
+}
+
+.storyFloorLabel {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.storyTitle {
+  font-size: var(--font-size-xl);
+  color: var(--color-text);
+  margin-bottom: var(--space-lg);
+}
+
+.storyText {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  max-width: 320px;
+  margin-bottom: var(--space-2xl);
+}
+
+.storyButton {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Helper preview in story card */
+.helperPreview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xl);
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius);
+}
+
+.helperEmoji {
+  font-size: 36px;
+}
+
+.helperName {
+  font-size: var(--font-size-md);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.helpCount {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* Helper bar in game */
+.helperBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-md);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--space-sm);
+}
+
+.helperBar .helperEmoji {
+  font-size: 24px;
+}
+
+.helperBar .helperName {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.helpDots {
+  display: flex;
+  gap: var(--space-xs);
+  margin-left: auto;
+}
+
+.helpDot {
+  font-size: 16px;
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.helpDotActive {
+  opacity: 1;
+  filter: none;
+}

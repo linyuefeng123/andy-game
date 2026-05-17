@@ -1,0 +1,127 @@
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.gameInfo {
+  text-align: center;
+}
+
+.turnInfo {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.boardWrapper {
+  background: var(--color-board);
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-card);
+}
+
+.board {
+  display: block;
+  touch-action: manipulation;
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.concedeButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: rgba(255, 107, 107, 0.2);
+  border: 2px solid var(--color-coral);
+  color: var(--color-coral);
+  min-height: var(--touch-target);
+  min-width: 120px;
+  font-weight: 700;
+}
+
+.claimWinButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  min-height: var(--touch-target);
+  min-width: 120px;
+  font-weight: 700;
+  box-shadow: var(--shadow-glow);
+}
+
+.winningGlow {
+  animation: pulse-glow 0.6s ease-in-out infinite;
+}
+
+/* Win overlay */
+.winOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winContent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  padding: var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.winEmoji {
+  font-size: 80px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.winText {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}
