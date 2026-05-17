@@ -282,16 +282,26 @@ export function isFloorImplemented(floorNumber: number): boolean {
 }
 
 const lazyCache: Record<number, React.LazyExoticComponent<FloorProps>> = {};
+const preloadCache: Record<number, Promise<{ default: ComponentType<FloorProps> }>> = {};
 
 export function preloadFloorComponent(floorNumber: number): void {
   const loader = floorModules[floorNumber];
-  if (loader) loader();
+  if (loader && !preloadCache[floorNumber]) {
+    preloadCache[floorNumber] = loader();
+  }
 }
 
 export function getFloorComponent(floorNumber: number): ComponentType<FloorProps> | null {
   const loader = floorModules[floorNumber];
   if (!loader) return null;
-  if (!lazyCache[floorNumber]) lazyCache[floorNumber] = lazy(loader);
+  if (!lazyCache[floorNumber]) {
+    const cachedPromise = preloadCache[floorNumber];
+    if (cachedPromise) {
+      lazyCache[floorNumber] = lazy(() => cachedPromise);
+    } else {
+      lazyCache[floorNumber] = lazy(loader);
+    }
+  }
   return lazyCache[floorNumber];
 }
 
