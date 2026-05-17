@@ -1,0 +1,71 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+  padding: var(--space-lg);
+}
+
+.modal {
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  border: 2px solid var(--color-lavender);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-2xl) var(--space-xl);
+  text-align: center;
+  max-width: 320px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(155, 114, 207, 0.3);
+}
+
+.boxEmoji {
+  font-size: 64px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.boxEmojiLarge {
+  font-size: 80px;
+  display: block;
+}
+
+.shakingBox {
+  padding: var(--space-lg);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.openButton {
+  background: linear-gradient(135deg, var(--color-lavender), var(--color-sky));
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  padding: var(--space-md) var(--space-2xl);
+  border-radius: var(--border-radius);
+  min-height: var(--touch-target);
+  min-width: 160px;
+  box-shadow: 0 0 20px rgba(155, 114, 207, 0.4);
+}
+
+.prizeEmoji {
+  font-size: 80px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.closeButton {
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--border-radius);
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}

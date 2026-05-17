@@ -75,9 +75,9 @@ export function getPlayerPieces(board: CellOwner[][], player: CellOwner): Pos[] 
  * 1. Win if possible
  * 2. Block opponent's win
  * 3. Move toward forming a diamond shape
- * 4. With 25% chance, make a random move (kid-friendly)
+ * 4. With randomRate chance, make a random move (kid-friendly)
  */
-export function findAIMove(board: CellOwner[][]): { from: Pos; to: Pos } | null {
+export function findAIMove(board: CellOwner[][], randomRate: number = 0.25): { from: Pos; to: Pos } | null {
   const aiPieces = getPlayerPieces(board, 2);
   const playerPieces = getPlayerPieces(board, 1);
 
@@ -131,8 +131,8 @@ export function findAIMove(board: CellOwner[][]): { from: Pos; to: Pos } | null 
 
   if (allMoves.length === 0) return null;
 
-  // 25% random move (kid-friendly)
-  if (Math.random() < 0.25) {
+  // randomRate random move (kid-friendly)
+  if (Math.random() < randomRate) {
     const idx = Math.floor(Math.random() * allMoves.length);
     return { from: allMoves[idx].from, to: allMoves[idx].to };
   }

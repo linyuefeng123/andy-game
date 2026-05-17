@@ -1,0 +1,83 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 5, 30, 0.95), rgba(30, 10, 50, 0.95));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  cursor: pointer;
+}
+
+.fireworksContainer {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  pointer-events: none;
+}
+
+.fireworkParticle {
+  position: absolute;
+  font-size: 28px;
+}
+
+.announcement {
+  text-align: center;
+  z-index: 1;
+}
+
+.goldenKey {
+  font-size: 64px;
+  margin-bottom: var(--space-md);
+  display: block;
+}
+
+.titleText {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-primary);
+  text-shadow: 0 0 30px rgba(255, 217, 61, 0.6);
+  margin-bottom: var(--space-sm);
+}
+
+.subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+}
+
+.preview {
+  text-align: center;
+  z-index: 1;
+  margin-top: var(--space-xl);
+}
+
+.previewText {
+  font-size: var(--font-size-md);
+  color: var(--color-lavender);
+  margin-bottom: var(--space-sm);
+}
+
+.previewFloors {
+  display: flex;
+  justify-content: center;
+}
+
+.futureFloor {
+  font-size: var(--font-size-md);
+  color: var(--color-sky);
+  font-weight: 700;
+}
+
+.tapHint {
+  position: absolute;
+  bottom: 60px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}

@@ -12,7 +12,7 @@ import {
 } from './jungleAI';
 import styles from './index.module.css';
 
-export default function JungleChessGame({ onExit, onComplete, helperChar, helpRemaining, onHelpUsed, onConcede, onClaimWin }: FloorProps) {
+export default function JungleChessGame({ onExit, onComplete, helperChar, helpRemaining, onHelpUsed, onConcede, onReplay }: FloorProps) {
   const language = useGameStore((s) => s.language);
   const [board, setBoard] = useState<CellState[][]>(createInitialBoard);
   const [currentPlayer, setCurrentPlayer] = useState<1 | 2>(1);
@@ -22,6 +22,8 @@ export default function JungleChessGame({ onExit, onComplete, helperChar, helpRe
   const [helpHint, setHelpHint] = useState<{ from: [number, number]; to: [number, number] } | null>(null);
 
   const helper = HELPER_CHARACTERS[helperChar];
+  const difficulty = useGameStore.getState().getDifficultyLevel(7);
+  const randomRate = difficulty === 1 ? 0.4 : difficulty === 2 ? 0.2 : 0.1;
 
   const handleCellClick = useCallback((r: number, c: number) => {
     if (winner !== 0 || currentPlayer !== 1) return;
@@ -64,7 +66,7 @@ export default function JungleChessGame({ onExit, onComplete, helperChar, helpRe
 
       // AI move
       setTimeout(() => {
-        const aiMove = findAIMove(newBoard);
+        const aiMove = findAIMove(newBoard, randomRate);
         if (aiMove) {
           const aiBoard = newBoard.map((row) => [...row]);
           aiBoard[aiMove.to[0]][aiMove.to[1]] = aiBoard[aiMove.from[0]][aiMove.from[1]];
@@ -88,19 +90,12 @@ export default function JungleChessGame({ onExit, onComplete, helperChar, helpRe
 
   const handleConcede = () => {
     onConcede();
-    setWinner(2);
-    onComplete(1);
-  };
-
-  const handleClaimWin = () => {
-    onClaimWin();
-    setWinner(1);
-    onComplete(3);
+    onExit();
   };
 
   const handleHelp = () => {
     if (helpRemaining <= 0 || winner !== 0 || currentPlayer !== 1) return;
-    const aiMove = findAIMove(board);
+    const aiMove = findAIMove(board, randomRate);
     if (aiMove) {
       setHelpHint({ from: aiMove.from, to: aiMove.to });
       onHelpUsed();
@@ -184,11 +179,8 @@ export default function JungleChessGame({ onExit, onComplete, helperChar, helpRe
           <button className={styles.helpButton} onClick={handleHelp} disabled={helpRemaining <= 0 || currentPlayer !== 1}>
             {helper.emoji} 💡 {helpRemaining}
           </button>
-          <button className={styles.concedeButton} onClick={handleConcede}>
-            😊 {language === 'zh' ? '认输' : 'Give up'}
-          </button>
-          <button className={styles.claimWinButton} onClick={handleClaimWin}>
-            🏆 {language === 'zh' ? '认赢' : 'I win!'}
+          <button className={styles.skipLink} onClick={handleConcede}>
+            {language === 'zh' ? '跳过这局' : 'Skip'}
           </button>
         </div>
       )}
@@ -207,11 +199,16 @@ export default function JungleChessGame({ onExit, onComplete, helperChar, helpRe
                 ? (language === 'zh' ? '你真棒！' : 'You win!')
                 : (language === 'zh' ? '再接再厉！' : 'Try again!')}
             </h2>
-            <button className={styles.winButton} onClick={handleWin}>
-              {winner === 1
-                ? (language === 'zh' ? '⭐ 继续冒险' : '⭐ Continue')
-                : (language === 'zh' ? '🏠 返回大厅' : '🏠 Back')}
-            </button>
+            <div className={styles.winButtons}>
+              <button className={styles.replayButton} onClick={onReplay}>
+                🔄 再玩一次！
+              </button>
+              <button className={styles.winButton} onClick={handleWin}>
+                {winner === 1
+                  ? (language === 'zh' ? '⭐ 继续冒险' : '⭐ Continue')
+                  : (language === 'zh' ? '🏠 返回大厅' : '🏠 Back')}
+              </button>
+            </div>
           </div>
         </motion.div>
       )}

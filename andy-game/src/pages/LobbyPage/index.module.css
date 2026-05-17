@@ -193,6 +193,20 @@
   font-weight: 700;
 }
 
+.shopButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(255, 107, 107, 0.15);
+  border: 2px solid var(--color-coral);
+  color: var(--color-coral);
+  min-height: var(--touch-target);
+  font-weight: 700;
+}
+
 .floorStatus {
   font-size: var(--font-size-md);
   color: var(--color-text-muted);

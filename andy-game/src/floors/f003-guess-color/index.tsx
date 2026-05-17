@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import EduGame from '../_shared/EduGame';
 import type { FloorProps } from '../_registry';
+import { useGameStore } from '../../store/useGameStore';
 
 const COLORS = [
   { nameZh: '红色', nameEn: 'Red', hex: '#ff6b6b' },
@@ -13,26 +14,37 @@ const COLORS = [
   { nameZh: '白色', nameEn: 'White', hex: '#f0f0f0' },
   { nameZh: '黑色', nameEn: 'Black', hex: '#2d2d44' },
   { nameZh: '棕色', nameEn: 'Brown', hex: '#8B4513' },
+  { nameZh: '灰色', nameEn: 'Gray', hex: '#808080' },
+  { nameZh: '金色', nameEn: 'Gold', hex: '#FFD700' },
+  { nameZh: '银色', nameEn: 'Silver', hex: '#C0C0C0' },
+  { nameZh: '浅蓝色', nameEn: 'Light Blue', hex: '#87CEEB' },
+  { nameZh: '深绿色', nameEn: 'Dark Green', hex: '#006400' },
+  { nameZh: '珊瑚色', nameEn: 'Coral', hex: '#FF7F50' },
+  { nameZh: '紫红色', nameEn: 'Magenta', hex: '#FF00FF' },
+  { nameZh: '青色', nameEn: 'Cyan', hex: '#00FFFF' },
 ];
 
 export default function GuessColorGame(props: FloorProps) {
+  const difficulty = useGameStore.getState().getDifficultyLevel(3);
+  const optionCount = difficulty === 1 ? 3 : difficulty === 2 ? 4 : 5;
+
   const config = useMemo(() => ({
     titleZh: '猜颜色',
     titleEn: 'Guess the Color',
     floorNumber: 3,
     totalRounds: 8,
-    questions: generateQuestions(),
-  }), []);
+    questions: generateQuestions(optionCount),
+  }), [optionCount]);
 
   return <EduGame {...props} config={config} />;
 }
 
-function generateQuestions() {
+function generateQuestions(optionCount: number = 3) {
   const shuffled = [...COLORS].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, 8).map((color) => {
     const others = COLORS.filter((c) => c.hex !== color.hex)
       .sort(() => Math.random() - 0.5)
-      .slice(0, 3);
+      .slice(0, optionCount - 1);
     const options = [...others.map((c) => c.nameZh), color.nameZh].sort(() => Math.random() - 0.5);
     const correctIndex = options.indexOf(color.nameZh);
 

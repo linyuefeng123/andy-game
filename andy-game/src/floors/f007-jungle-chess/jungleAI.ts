@@ -149,7 +149,8 @@ export function checkWin(board: CellState[][]): 0 | 1 | 2 {
 }
 
 // AI: simple greedy - find best capture, else random move
-export function findAIMove(board: CellState[][]): { from: [number, number]; to: [number, number] } | null {
+// randomRate controls how often AI makes a random move (easy=0.4, medium=0.2, hard=0.1)
+export function findAIMove(board: CellState[][], randomRate: number = 0.3): { from: [number, number]; to: [number, number] } | null {
   const aiMoves: { from: [number, number]; to: [number, number]; score: number }[] = [];
 
   for (let r = 0; r < ROWS; r++) {
@@ -187,6 +188,13 @@ export function findAIMove(board: CellState[][]): { from: [number, number]; to: 
   }
 
   if (aiMoves.length === 0) return null;
+
+  // Random move based on difficulty
+  if (Math.random() < randomRate) {
+    const idx = Math.floor(Math.random() * aiMoves.length);
+    return aiMoves[idx];
+  }
+
   aiMoves.sort((a, b) => b.score - a.score);
   return aiMoves[0];
 }

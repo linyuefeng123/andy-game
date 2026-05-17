@@ -20,9 +20,9 @@ export default function GomokuBoard({
   disabled,
   helpHint,
 }: GomokuBoardProps) {
-  // Responsive cell size: fit within container, capped at 50px
+  // Responsive cell size: fit within container, capped at 50px, min 44px (Apple HIG)
   const maxWidth = Math.min(window.innerWidth - 32, 500);
-  const cellSize = Math.min(maxWidth / BOARD_SIZE, 50);
+  const cellSize = Math.max(44, Math.min(maxWidth / BOARD_SIZE, 50));
 
   const isWinningCell = (r: number, c: number) =>
     winningCells.some(([wr, wc]) => wr === r && wc === c);

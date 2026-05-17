@@ -1,0 +1,71 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  cursor: pointer;
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+}
+
+.andyContainer {
+  position: relative;
+  z-index: 1;
+}
+
+.andyEmoji {
+  font-size: 80px;
+  display: block;
+}
+
+.starRain {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  pointer-events: none;
+}
+
+.starParticle {
+  position: absolute;
+  font-size: 24px;
+}
+
+.announcement {
+  text-align: center;
+  z-index: 1;
+  margin-top: var(--space-xl);
+}
+
+.newTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-primary);
+  text-shadow: 0 0 20px rgba(255, 217, 61, 0.5);
+}
+
+.pointsLabel {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  margin-top: var(--space-sm);
+}
+
+.tapHint {
+  position: absolute;
+  bottom: 60px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}

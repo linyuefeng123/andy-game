@@ -51,11 +51,15 @@ export function checkWin(
  * 1. Win if possible
  * 2. Block opponent's win
  * 3. Score-based evaluation with deliberate mistakes for kid-friendliness
+ *
+ * @param randomRate Probability of making a random move (0 = always best, 1 = always random).
+ *   Easy: 0.4, Medium: 0.2, Hard: 0.1
  */
 export function findBestMove(
   board: CellState[][],
   size: number,
-  winLength: number
+  winLength: number,
+  randomRate: number = 0.3
 ): [number, number] | null {
   const empty: [number, number][] = [];
   for (let r = 0; r < size; r++) {
@@ -87,8 +91,8 @@ export function findBestMove(
   }
 
   // 3. Score-based move with randomness (easy mode)
-  // 30% chance of making a random move (keeps it fun for kids)
-  if (Math.random() < 0.3) {
+  // randomRate chance of making a random move (keeps it fun for kids)
+  if (Math.random() < randomRate) {
     const nearEmpty = empty.filter(([r, c]) => hasNeighbor(board, r, c, size));
     if (nearEmpty.length > 0) {
       return nearEmpty[Math.floor(Math.random() * nearEmpty.length)];

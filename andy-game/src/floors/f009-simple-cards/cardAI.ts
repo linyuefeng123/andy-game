@@ -146,3 +146,22 @@ export function findAIPlay(hand: Card[], lastPlay: Play | null): Card[] | null {
 export function isSuitRed(suit: Suit): boolean {
   return suit === '♥' || suit === '♦';
 }
+
+// ============ War (比大小) mode ============
+
+export interface WarCard {
+  suit: Suit;
+  rank: number; // 2-14 (2=2, ..., 10=10, J=11, Q=12, K=13, A=14)
+  display: string;
+}
+
+export function createWarDeck(): WarCard[] {
+  const deck: WarCard[] = [];
+  const suits: Suit[] = ['♠', '♥', '♣', '♦'];
+  for (const suit of suits) {
+    for (let rank = 2; rank <= 14; rank++) {
+      deck.push({ suit, rank, display: RANK_DISPLAY[rank] ?? String(rank) });
+    }
+  }
+  return deck;
+}

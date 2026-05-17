@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import type { FloorProps } from '../_registry';
 import { HELPER_CHARACTERS } from '../_registry';
+import { useGameStore } from '../../store/useGameStore';
 import GomokuBoard from './GomokuBoard';
 import { checkWin, findBestMove } from './gomokuAI';
 import styles from './index.module.css';
@@ -11,7 +12,7 @@ const WIN_LENGTH = 5;
 
 export type CellState = 0 | 1 | 2; // 0=empty, 1=black(Andy), 2=white(AI)
 
-export default function GomokuGame({ onExit, onComplete, helperChar, helpRemaining, onHelpUsed, onConcede, onClaimWin }: FloorProps) {
+export default function GomokuGame({ onExit, onComplete, helperChar, helpRemaining, onHelpUsed, onConcede, onReplay }: FloorProps) {
   const [board, setBoard] = useState<CellState[][]>(
     () => Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0) as CellState[])
   );
@@ -22,6 +23,8 @@ export default function GomokuGame({ onExit, onComplete, helperChar, helpRemaini
   const [helpHint, setHelpHint] = useState<[number, number] | null>(null);
 
   const helper = HELPER_CHARACTERS[helperChar];
+  const difficulty = useGameStore.getState().getDifficultyLevel(1);
+  const randomRate = difficulty === 1 ? 0.4 : difficulty === 2 ? 0.2 : 0.1;
 
   const handleCellClick = useCallback(
     (row: number, col: number) => {
@@ -45,7 +48,7 @@ export default function GomokuGame({ onExit, onComplete, helperChar, helpRemaini
 
       // AI move after a short delay
       setTimeout(() => {
-        const aiMove = findBestMove(newBoard, BOARD_SIZE, WIN_LENGTH);
+        const aiMove = findBestMove(newBoard, BOARD_SIZE, WIN_LENGTH, randomRate);
         if (aiMove) {
           newBoard[aiMove[0]][aiMove[1]] = 2;
           setLastMove([aiMove[0], aiMove[1]]);
@@ -65,19 +68,12 @@ export default function GomokuGame({ onExit, onComplete, helperChar, helpRemaini
 
   const handleConcede = () => {
     onConcede();
-    setWinner(2);
-    onComplete(1);
-  };
-
-  const handleClaimWin = () => {
-    onClaimWin();
-    setWinner(1);
-    onComplete(3);
+    onExit();
   };
 
   const handleHelp = () => {
     if (helpRemaining <= 0 || winner !== 0 || currentPlayer !== 1) return;
-    const move = findBestMove(board, BOARD_SIZE, WIN_LENGTH);
+    const move = findBestMove(board, BOARD_SIZE, WIN_LENGTH, randomRate);
     if (move) {
       setHelpHint(move);
       onHelpUsed();
@@ -117,11 +113,8 @@ export default function GomokuGame({ onExit, onComplete, helperChar, helpRemaini
           <button className={styles.helpButton} onClick={handleHelp} disabled={helpRemaining <= 0 || currentPlayer !== 1}>
             {helper.emoji} 💡 {helpRemaining}
           </button>
-          <button className={styles.concedeButton} onClick={handleConcede}>
-            😊 认输
-          </button>
-          <button className={styles.claimWinButton} onClick={handleClaimWin}>
-            🏆 认赢
+          <button className={styles.skipLink} onClick={handleConcede}>
+            跳过这局
           </button>
         </div>
       )}
@@ -138,9 +131,14 @@ export default function GomokuGame({ onExit, onComplete, helperChar, helpRemaini
             <h2 className={styles.winText}>
               {winner === 1 ? '你真棒！' : '再接再厉！'}
             </h2>
-            <button className={styles.winButton} onClick={handleWin}>
-              {winner === 1 ? '⭐ 继续冒险' : '🏠 返回大厅'}
-            </button>
+            <div className={styles.winButtons}>
+              <button className={styles.replayButton} onClick={onReplay}>
+                🔄 再玩一次！
+              </button>
+              <button className={styles.winButton} onClick={handleWin}>
+                {winner === 1 ? '⭐ 继续冒险' : '🏠 返回大厅'}
+              </button>
+            </div>
           </div>
         </motion.div>
       )}

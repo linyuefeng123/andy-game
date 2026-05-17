@@ -2,9 +2,9 @@ import { useGameStore } from '../store/useGameStore';
 import { IMPLEMENTED_FLOORS } from '../floors/_registry';
 
 export function useElevator() {
-  const elevatorUsesRemaining = useGameStore((s) => s.elevatorUsesRemaining);
+  const elevatorTickets = useGameStore((s) => s.elevatorTickets);
   const useElevatorPress = useGameStore((s) => s.useElevator);
-  const resetElevatorUses = useGameStore((s) => s.resetElevatorUses);
+  const resetElevatorTickets = useGameStore((s) => s.resetElevatorTickets);
   const visitedFloors = useGameStore((s) => s.visitedFloors);
 
   const pickRandomFloor = (): number => {
@@ -25,9 +25,9 @@ export function useElevator() {
   };
 
   return {
-    elevatorUsesRemaining,
+    elevatorTickets,
     pressElevator,
-    resetElevatorUses,
-    canUseElevator: elevatorUsesRemaining > 0,
+    resetElevatorTickets,
+    canUseElevator: elevatorTickets > 0,
   };
 }

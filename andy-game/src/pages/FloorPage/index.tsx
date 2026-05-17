@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGameStore } from '../../store/useGameStore';
 import type { FloorReward } from '../../store/useGameStore';
+import ErrorBoundary from '../../components/ErrorBoundary';
 import { getFloorComponent, getFloorMeta, isFloorImplemented, randomHelper, HELPER_CHARACTERS, type HelperCharacter } from '../../floors/_registry';
 import styles from './index.module.css';
 
@@ -14,18 +15,19 @@ export default function FloorPage() {
   const language = useGameStore((s) => s.language);
   const floorNumber = parseInt(floorId ?? '1', 10);
   const [showStory, setShowStory] = useState(true);
+  const [replayKey, setReplayKey] = useState(0);
   const meta = getFloorMeta(floorNumber);
 
   const [helperChar] = useState<HelperCharacter>(randomHelper);
   const [helpRemaining, setHelpRemaining] = useState(MAX_HELP);
 
   const handleExit = () => {
-    navigate('/lobby');
+    navigate('/lobby', { state: { fromFloor: true } });
   };
 
   const handleComplete = (stars: number, reward?: FloorReward) => {
     useGameStore.getState().completeFloor(floorNumber, stars, reward);
-    useGameStore.getState().adjustIq(stars);
+    useGameStore.getState().addAdventurePoints(stars);
   };
 
   const handleHelpUsed = () => {
@@ -34,12 +36,14 @@ export default function FloorPage() {
     }
   };
 
+  // onConcede is now "skip" — no penalty
   const handleConcede = () => {
-    useGameStore.getState().adjustIq(-1);
+    // Just exit, no negative adventure points
   };
 
-  const handleClaimWin = () => {
-    useGameStore.getState().adjustIq(-2);
+  const handleReplay = () => {
+    setReplayKey((k) => k + 1);
+    setHelpRemaining(MAX_HELP);
   };
 
   if (!isFloorImplemented(floorNumber)) {
@@ -67,6 +71,12 @@ export default function FloorPage() {
   const story = language === 'zh' ? meta.storyZh : meta.storyEn;
   const bgColor = meta.bgColor;
   const helper = HELPER_CHARACTERS[helperChar];
+  const difficulty = useGameStore.getState().getDifficultyLevel(floorNumber);
+  const difficultyLabel = difficulty === 1
+    ? (language === 'zh' ? '⭐简单' : '⭐Easy')
+    : difficulty === 2
+      ? (language === 'zh' ? '⭐⭐中等' : '⭐⭐Medium')
+      : (language === 'zh' ? '⭐⭐⭐困难' : '⭐⭐⭐Hard');
 
   if (showStory && story) {
     return (
@@ -113,6 +123,7 @@ export default function FloorPage() {
           <span className={styles.floorName}>
             {language === 'zh' ? meta.nameZh : meta.nameEn}
           </span>
+          <span className={styles.difficultyLabel}>{difficultyLabel}</span>
         </div>
         <button className={styles.skipButton} onClick={handleExit}>
           {language === 'zh' ? '⏭️ 跳过' : '⏭️ Skip'}
@@ -136,17 +147,33 @@ export default function FloorPage() {
 
       <div className={styles.gameArea}>
         {FloorComponent && (
-          <Suspense fallback={<div className={styles.loading}>...</div>}>
-            <FloorComponent
+          <ErrorBoundary>
+            <Suspense fallback={
+              <div className={styles.loadingContainer}>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                  style={{ fontSize: '32px' }}
+                >
+                  🚪
+                </motion.div>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '14px', marginTop: '12px' }}>
+                  {language === 'zh' ? '加载中...' : 'Loading...'}
+                </p>
+              </div>
+            }>
+              <FloorComponent
+              key={replayKey}
               onExit={handleExit}
               onComplete={handleComplete}
               helperChar={helperChar}
               helpRemaining={helpRemaining}
               onHelpUsed={handleHelpUsed}
               onConcede={handleConcede}
-              onClaimWin={handleClaimWin}
+              onReplay={handleReplay}
             />
-          </Suspense>
+            </Suspense>
+          </ErrorBoundary>
         )}
       </div>
     </div>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useGameStore } from '../../store/useGameStore';
 import { getFloorMeta, isFloorImplemented } from '../../floors/_registry';
 import { playSound } from '../../utils/audio';
+import { ACHIEVEMENTS, getAchievementById } from '../../utils/achievements';
 import styles from './index.module.css';
 
 export default function AchievementsPage() {
@@ -12,6 +13,7 @@ export default function AchievementsPage() {
   const unlockedFloors = useGameStore((s) => s.unlockedFloors);
   const collectedRewards = useGameStore((s) => s.collectedRewards);
   const totalStars = useGameStore((s) => s.totalStars);
+  const unlockedAchievements = useGameStore((s) => s.unlockedAchievements);
 
   const completedCount = Object.keys(completedFloors).length;
 
@@ -28,7 +30,7 @@ export default function AchievementsPage() {
       {/* Header */}
       <div className={styles.header}>
         <button className={styles.backButton} onClick={() => navigate('/lobby')}>
-          ← {language === 'zh' ? '返回' : 'Back'}
+          {language === 'zh' ? '← 返回' : '← Back'}
         </button>
         <h1 className={styles.title}>
           {language === 'zh' ? '🏆 成就与奖励' : '🏆 Achievements'}
@@ -57,6 +59,53 @@ export default function AchievementsPage() {
           <span className={styles.summaryLabel}>
             {language === 'zh' ? '收集奖励' : 'Rewards'}
           </span>
+        </div>
+      </div>
+
+      {/* Achievement badges grid */}
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>
+          {language === 'zh' ? '🏅 成就徽章' : '🏅 Achievement Badges'}
+        </h2>
+        <div className={styles.badgeGrid}>
+          {ACHIEVEMENTS.map((achievement, i) => {
+            const isUnlocked = unlockedAchievements.includes(achievement.id);
+            return (
+              <motion.div
+                key={achievement.id}
+                className={`${styles.badgeCard} ${isUnlocked ? styles.badgeUnlocked : styles.badgeLocked}`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.08, type: 'spring', stiffness: 300, damping: 25 }}
+              >
+                {isUnlocked ? (
+                  <>
+                    <motion.span
+                      className={styles.badgeIcon}
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                    >
+                      {achievement.icon}
+                    </motion.span>
+                    <span className={styles.badgeName}>
+                      {language === 'zh' ? achievement.nameZh : achievement.nameEn}
+                    </span>
+                    <span className={styles.badgeDesc}>
+                      {language === 'zh' ? achievement.descriptionZh : achievement.descriptionEn}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className={styles.badgeIconLocked}>🔒</span>
+                    <span className={styles.badgeNameLocked}>???</span>
+                    <span className={styles.badgeDesc}>
+                      {language === 'zh' ? achievement.descriptionZh : achievement.descriptionEn}
+                    </span>
+                  </>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
@@ -125,7 +174,7 @@ export default function AchievementsPage() {
                   )}
                   {canEnter && !isCompleted && (
                     <span className={styles.playButton}>
-                      ▶ {language === 'zh' ? '进入' : 'Play'}
+                      {language === 'zh' ? '▶ 进入' : '▶ Play'}
                     </span>
                   )}
                   {isCompleted && (
@@ -135,7 +184,7 @@ export default function AchievementsPage() {
                       </span>
                       <span className={styles.rewardBadge}>{meta.reward.emoji}</span>
                       <span className={styles.playAgain}>
-                        ▶ {language === 'zh' ? '再玩' : 'Replay'}
+                        {language === 'zh' ? '▶ 再玩' : '▶ Replay'}
                       </span>
                     </>
                   )}
@@ -145,6 +194,9 @@ export default function AchievementsPage() {
           })}
         </div>
       </div>
+
+      {/* Suppress unused import warning */}
+      {void getAchievementById}
     </div>
   );
 }

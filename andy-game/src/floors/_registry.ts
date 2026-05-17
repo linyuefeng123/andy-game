@@ -1,4 +1,5 @@
 import { lazy, type ComponentType } from 'react';
+import type { Suspense } from 'react';
 import type { FloorReward } from '../store/useGameStore';
 
 export type HelperCharacter = 'grandpa' | 'grandma' | 'mom';
@@ -21,8 +22,9 @@ export interface FloorProps {
   helperChar: HelperCharacter;
   helpRemaining: number;
   onHelpUsed: () => void;
+  /** Skip the current game (no penalty) */
   onConcede: () => void;
-  onClaimWin: () => void;
+  onReplay: () => void;
 }
 
 export interface FloorMeta {
@@ -119,10 +121,13 @@ export function isFloorImplemented(floorNumber: number): boolean {
   return floorNumber in floorModules;
 }
 
+const lazyCache: Record<number, React.LazyExoticComponent<FloorProps>> = {};
+
 export function getFloorComponent(floorNumber: number): ComponentType<FloorProps> | null {
   const loader = floorModules[floorNumber];
   if (!loader) return null;
-  return lazy(loader);
+  if (!lazyCache[floorNumber]) lazyCache[floorNumber] = lazy(loader);
+  return lazyCache[floorNumber];
 }
 
 export function getFloorMeta(floorNumber: number): FloorMeta {

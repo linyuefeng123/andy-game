@@ -9,12 +9,12 @@ export default function WelcomePage() {
   const setPlayerName = useGameStore((s) => s.setPlayerName);
   const setLanguage = useGameStore((s) => s.setLanguage);
   const language = useGameStore((s) => s.language);
-  const resetElevatorUses = useGameStore((s) => s.resetElevatorUses);
+  const resetElevatorTickets = useGameStore((s) => s.resetElevatorTickets);
 
   const selectAndy = () => {
     playSound('click');
     setPlayerName('Andy 林浚之');
-    resetElevatorUses();
+    resetElevatorTickets();
     navigate('/lobby');
   };
 

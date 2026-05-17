@@ -63,28 +63,20 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-.concedeButton {
-  font-size: var(--font-size-md);
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--border-radius);
-  background: rgba(255, 107, 107, 0.2);
-  border: 2px solid var(--color-coral);
-  color: var(--color-coral);
-  min-height: var(--touch-target);
-  min-width: 120px;
-  font-weight: 700;
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
 }
 
-.claimWinButton {
-  font-size: var(--font-size-md);
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--border-radius);
-  background: linear-gradient(135deg, var(--color-primary), #ffb347);
-  color: var(--color-text-dark);
-  min-height: var(--touch-target);
-  min-width: 120px;
-  font-weight: 700;
-  box-shadow: var(--shadow-glow);
+.skipLink:hover {
+  color: var(--color-text);
 }
 
 /* Animations */
@@ -209,4 +201,22 @@
   color: var(--color-text-dark);
   font-weight: 700;
   min-height: var(--touch-target);
+}
+
+.resultButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
 }

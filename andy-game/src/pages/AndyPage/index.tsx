@@ -8,28 +8,32 @@ export default function AndyPage() {
   const navigate = useNavigate();
   const language = useGameStore((s) => s.language);
   const playerName = useGameStore((s) => s.playerName);
-  const iq = useGameStore((s) => s.iq);
+  const adventurePoints = useGameStore((s) => s.adventurePoints);
   const totalStars = useGameStore((s) => s.totalStars);
   const completedFloors = useGameStore((s) => s.completedFloors);
   const collectedRewards = useGameStore((s) => s.collectedRewards);
 
   const completedCount = Object.keys(completedFloors).length;
 
-  const iqLevel = iq >= 150
-    ? language === 'zh' ? '超级天才' : 'Super Genius'
-    : iq >= 120
-      ? language === 'zh' ? '天才' : 'Genius'
-      : iq >= 100
-        ? language === 'zh' ? '聪明' : 'Smart'
-        : iq >= 80
-          ? language === 'zh' ? '普通' : 'Normal'
-          : iq >= 60
-            ? language === 'zh' ? '需要努力' : 'Keep Trying'
-            : language === 'zh' ? '加油哦' : 'You Can Do It!';
+  const getLabel = () => {
+    if (adventurePoints >= 150) return language === 'zh' ? '传奇冒险王 👑' : 'Legend 👑';
+    if (adventurePoints >= 100) return language === 'zh' ? '超级英雄 🦸' : 'Super Hero 🦸';
+    if (adventurePoints >= 60) return language === 'zh' ? '聪明小达人 🌟' : 'Smart Star 🌟';
+    if (adventurePoints >= 30) return language === 'zh' ? '勇敢探索者 ⚡' : 'Brave Explorer ⚡';
+    return language === 'zh' ? '新手冒险家 🌱' : 'Novice Adventurer 🌱';
+  };
 
-  const iqColor = iq >= 120 ? '#ffd93d' : iq >= 100 ? '#6bcb77' : iq >= 80 ? '#4d96ff' : '#ff6b6b';
+  const getColor = () => {
+    if (adventurePoints >= 150) return '#ffd93d';
+    if (adventurePoints >= 100) return '#9b72cf';
+    if (adventurePoints >= 60) return '#4d96ff';
+    if (adventurePoints >= 30) return '#ffd93d';
+    return '#6bcb77';
+  };
 
-  const iqBarWidth = Math.min(100, Math.max(0, (iq / 200) * 100));
+  const label = getLabel();
+  const color = getColor();
+  const barWidth = Math.min(100, Math.max(0, (adventurePoints / 200) * 100));
 
   return (
     <div className={styles.container}>
@@ -49,7 +53,7 @@ export default function AndyPage() {
           <AndyAvatar pose="wave" size={80} />
         </div>
         <h1 className={styles.playerName}>{playerName}</h1>
-        <p className={styles.playerTitle}>{iqLevel}</p>
+        <p className={styles.playerTitle} style={{ color }}>{label}</p>
       </motion.div>
 
       <motion.div
@@ -60,18 +64,18 @@ export default function AndyPage() {
       >
         <div className={styles.iqHeader}>
           <span className={styles.iqLabel}>
-            {language === 'zh' ? '🧠 聪明值 IQ' : '🧠 IQ'}
+            {language === 'zh' ? '⚔️ 冒险积分' : '⚔️ Adventure Points'}
           </span>
-          <span className={styles.iqValue} style={{ color: iqColor }}>
-            {iq}
+          <span className={styles.iqValue} style={{ color }}>
+            {adventurePoints}
           </span>
         </div>
         <div className={styles.iqBar}>
           <motion.div
             className={styles.iqBarFill}
-            style={{ background: iqColor }}
+            style={{ background: color }}
             initial={{ width: 0 }}
-            animate={{ width: `${iqBarWidth}%` }}
+            animate={{ width: `${barWidth}%` }}
             transition={{ duration: 1, ease: 'easeOut' }}
           />
         </div>
@@ -120,24 +124,24 @@ export default function AndyPage() {
         transition={{ duration: 0.5, delay: 0.45 }}
       >
         <h3 className={styles.rulesTitle}>
-          {language === 'zh' ? '📋 IQ规则' : '📋 IQ Rules'}
+          {language === 'zh' ? '📋 冒险规则' : '📋 Adventure Rules'}
         </h3>
         <ul className={styles.rulesList}>
           <li>
             <span className={styles.ruleIcon}>⭐</span>
-            {language === 'zh' ? '通关游戏 → IQ +星数' : 'Clear game → IQ +stars'}
+            {language === 'zh' ? '通关游戏 → 冒险积分 +星数' : 'Clear game → Adventure Points +stars'}
           </li>
           <li>
-            <span className={styles.ruleIcon}>😊</span>
-            {language === 'zh' ? '认输 → IQ -1' : 'Give up → IQ -1'}
-          </li>
-          <li>
-            <span className={styles.ruleIcon}>🏆</span>
-            {language === 'zh' ? '认赢 → IQ -2' : 'Claim win → IQ -2'}
+            <span className={styles.ruleIcon}>🎫</span>
+            {language === 'zh' ? '通关还能获得电梯车票！' : 'Clear floors to earn elevator tickets!'}
           </li>
           <li>
             <span className={styles.ruleIcon}>💡</span>
-            {language === 'zh' ? '使用帮助不影响IQ' : 'Using help doesn\'t affect IQ'}
+            {language === 'zh' ? '使用帮助不影响积分' : "Using help doesn't affect points"}
+          </li>
+          <li>
+            <span className={styles.ruleIcon}>🌱</span>
+            {language === 'zh' ? '每次冒险都是进步！' : 'Every adventure is progress!'}
           </li>
         </ul>
       </motion.div>

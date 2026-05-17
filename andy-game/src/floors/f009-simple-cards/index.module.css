@@ -13,13 +13,15 @@
 .aiArea {
   text-align: center;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
 }
 
 .aiLabel {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
-  display: block;
-  margin-bottom: var(--space-xs);
 }
 
 .aiCards {
@@ -29,88 +31,40 @@
   flex-wrap: wrap;
 }
 
-.cardBack {
-  font-size: 16px;
-  margin: 0 -6px;
-  opacity: 0.6;
-}
-
-/* Game log */
-.gameLog {
-  width: 100%;
-  max-height: 64px;
-  overflow-y: auto;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: var(--border-radius-sm);
-  padding: var(--space-xs) var(--space-sm);
-}
-
-.logEntry {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  padding: 2px 0;
-}
-
-/* Play info */
-.playInfo {
-  height: 24px;
-  text-align: center;
-}
-
-.playType {
-  font-size: var(--font-size-md);
-  color: var(--color-mint);
-  font-weight: 700;
-}
-
-.invalidPlay {
-  font-size: var(--font-size-sm);
-  color: var(--color-coral);
-}
-
-/* Player hand - scrollable on small screens */
-.playerArea {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: var(--space-xs) 0;
-}
-
-.playerCards {
+/* Card pile for War mode */
+.cardPile {
   display: flex;
-  gap: 0;
   justify-content: center;
-  flex-wrap: wrap;
-  min-height: 72px;
 }
 
+/* Card base styles */
 .card {
-  width: clamp(34px, 8vw, 42px);
-  height: clamp(48px, 11vw, 58px);
+  width: clamp(44px, 12vw, 64px);
+  height: clamp(60px, 16vw, 88px);
   background: #f0f0e8;
-  border-radius: 4px;
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0 -2px;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: border-color var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   position: relative;
   flex-shrink: 0;
 }
 
-.cardSelected {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 8px rgba(255, 217, 61, 0.4);
-  z-index: 1;
+.faceDown {
+  background: linear-gradient(135deg, #2d2d6a, #4a4a8a);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(20px, 6vw, 28px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  min-height: 60px;
 }
 
-.cardHelpHint {
-  border-color: var(--color-sky);
-  box-shadow: 0 0 10px rgba(77, 150, 255, 0.5);
-  animation: pulse-glow 0.8s ease-in-out infinite;
+.faceDown:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 12px rgba(255, 217, 61, 0.4);
 }
 
 .redCard {
@@ -122,57 +76,65 @@
 }
 
 .cardSuit {
-  font-size: clamp(10px, 2.5vw, 12px);
+  font-size: clamp(12px, 3vw, 16px);
   line-height: 1;
 }
 
 .cardRank {
-  font-size: clamp(13px, 3.5vw, 16px);
+  font-size: clamp(16px, 5vw, 24px);
   font-weight: 800;
   line-height: 1;
 }
 
-/* Action row */
-.actionRow {
-  display: flex;
-  gap: var(--space-md);
+/* Player area */
+.playerArea {
+  text-align: center;
   width: 100%;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
 }
 
-.passButton {
-  font-size: var(--font-size-md);
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--border-radius);
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: var(--color-text);
-  min-height: var(--touch-target);
-  min-width: 80px;
+.playerLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* Message area */
+.messageArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 60px;
+}
+
+.message {
+  font-size: var(--font-size-lg);
   font-weight: 700;
+  text-align: center;
 }
 
-.passButton:disabled {
-  opacity: 0.4;
-  cursor: default;
+.msgWin {
+  color: var(--color-mint);
 }
 
-.playButton {
-  font-size: var(--font-size-md);
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--border-radius);
-  background: linear-gradient(135deg, var(--color-primary), #ffb347);
-  color: var(--color-text-dark);
-  min-height: var(--touch-target);
-  min-width: 80px;
-  font-weight: 700;
+.msgLose {
+  color: var(--color-coral);
 }
 
-.playButton:disabled {
-  opacity: 0.5;
-  cursor: default;
+.msgWar {
+  color: var(--color-primary);
+  font-size: var(--font-size-xl);
 }
 
+.warPileCount {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* Action buttons */
 .actionButtons {
   display: flex;
   gap: var(--space-sm);
@@ -201,28 +163,20 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-.concedeButton {
-  font-size: var(--font-size-sm);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--border-radius);
-  background: rgba(255, 107, 107, 0.2);
-  border: 2px solid var(--color-coral);
-  color: var(--color-coral);
-  min-height: var(--touch-target);
-  min-width: 80px;
-  font-weight: 700;
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
 }
 
-.claimWinButton {
-  font-size: var(--font-size-sm);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--border-radius);
-  background: linear-gradient(135deg, var(--color-primary), #ffb347);
-  color: var(--color-text-dark);
-  min-height: var(--touch-target);
-  min-width: 80px;
-  font-weight: 700;
-  box-shadow: var(--shadow-glow);
+.skipLink:hover {
+  color: var(--color-text);
 }
 
 /* Win overlay */
@@ -257,6 +211,13 @@
   margin-bottom: var(--space-md);
 }
 
+.winButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
 .winButton {
   font-size: var(--font-size-lg);
   padding: var(--space-md) var(--space-xl);
@@ -265,4 +226,15 @@
   color: var(--color-text-dark);
   font-weight: 700;
   min-height: var(--touch-target);
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
 }

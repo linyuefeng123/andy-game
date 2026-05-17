@@ -11,6 +11,7 @@ interface DiamondBoardProps {
   onCellClick: (r: number, c: number) => void;
   disabled: boolean;
   helpHint?: { from: Pos; to: Pos } | null;
+  showGuide?: boolean;
 }
 
 const BOARD_SIZE = 5;
@@ -24,6 +25,7 @@ export default function DiamondBoard({
   onCellClick,
   disabled,
   helpHint,
+  showGuide = true,
 }: DiamondBoardProps) {
   const cellSize = Math.min((Math.min(window.innerWidth - 32, 500) - 60) / BOARD_SIZE, 72);
   const padding = 12;
@@ -210,8 +212,57 @@ export default function DiamondBoard({
           </g>
         )}
 
+        {/* Dashed diamond guide outline showing target shape */}
+        {showGuide && winningCells.length === 0 && (
+          <g opacity={0.3}>
+            {/* Example diamond at center: (1,2)(2,1)(2,3)(3,2) */}
+            <polygon
+              points={[
+                `${padding + 2 * cellSize + cellSize / 2},${padding + 1 * cellSize + cellSize / 2 - cellSize * 0.32}`,
+                `${padding + 3 * cellSize + cellSize / 2 + cellSize * 0.32},${padding + 2 * cellSize + cellSize / 2}`,
+                `${padding + 2 * cellSize + cellSize / 2},${padding + 3 * cellSize + cellSize / 2 + cellSize * 0.32}`,
+                `${padding + 1 * cellSize + cellSize / 2 - cellSize * 0.32},${padding + 2 * cellSize + cellSize / 2}`,
+              ].join(' ')}
+              fill="none"
+              stroke="#ffd93d"
+              strokeWidth={2}
+              strokeDasharray="6 4"
+            />
+          </g>
+        )}
+
+        {/* Tutorial arrow for first moves */}
+        {showGuide && !lastMove && !selectedPiece && winningCells.length === 0 && (
+          <g>
+            <line
+              x1={padding + 0 * cellSize + cellSize / 2}
+              y1={padding + 0 * cellSize + cellSize / 2}
+              x2={padding + 1 * cellSize + cellSize / 2}
+              y2={padding + 1 * cellSize + cellSize / 2}
+              stroke="#ffd93d"
+              strokeWidth={2}
+              markerEnd="url(#arrowhead)"
+              opacity={0.7}
+            />
+            <text
+              x={padding + 0.5 * cellSize + cellSize / 2}
+              y={padding + 0 * cellSize + cellSize * 0.2}
+              textAnchor="middle"
+              fill="#ffd93d"
+              fontSize={11}
+              fontWeight="bold"
+              opacity={0.8}
+            >
+              把这颗移到这里！
+            </text>
+          </g>
+        )}
+
         {/* Gradient definitions */}
         <defs>
+          <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#ffd93d" opacity={0.7} />
+          </marker>
           <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#ffd93d" />
             <stop offset="100%" stopColor="#ffb347" />

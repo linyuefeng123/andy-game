@@ -20,53 +20,36 @@
 .instruction {
   font-size: var(--font-size-md);
   color: var(--color-text);
-  margin-bottom: var(--space-lg);
-}
-
-.inputRow {
-  display: flex;
-  gap: var(--space-sm);
-  justify-content: center;
   margin-bottom: var(--space-md);
 }
 
-.input {
-  width: 80px;
-  font-size: clamp(28px, 8vw, var(--font-size-2xl));
-  text-align: center;
+/* Thermometer */
+.thermometerArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.thermometerBar {
+  width: 80%;
+  height: 12px;
   background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--border-radius);
-  color: var(--color-primary);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.thermometerFill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+
+.thermometerLabel {
+  font-size: var(--font-size-sm);
   font-weight: 700;
-  padding: var(--space-sm);
-  outline: none;
-}
-
-.input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 10px rgba(255, 217, 61, 0.3);
-}
-
-.input::-webkit-inner-spin-button,
-.input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-}
-
-.guessButton {
-  font-size: var(--font-size-lg);
-  font-weight: 700;
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--border-radius);
-  background: linear-gradient(135deg, var(--color-primary), #ffb347);
-  color: var(--color-text-dark);
-  min-height: var(--touch-target);
-  cursor: pointer;
-}
-
-.guessButton:disabled {
-  opacity: 0.5;
-  cursor: default;
+  color: var(--color-text);
 }
 
 .feedback {
@@ -90,6 +73,74 @@
   font-size: var(--font-size-xl);
   font-weight: 700;
   color: var(--color-mint);
+}
+
+/* Number line */
+.numberLineArea {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--space-xs);
+}
+
+.numberLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  min-width: fit-content;
+}
+
+.numButton {
+  width: clamp(36px, 8vw, 44px);
+  height: clamp(36px, 8vw, 44px);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  font-size: clamp(11px, 3vw, 14px);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: 44px;
+  min-width: 36px;
+}
+
+.numButton:hover:not(:disabled) {
+  background: rgba(255, 217, 61, 0.2);
+  border-color: var(--color-primary);
+}
+
+.numButton:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+.numButton:disabled {
+  cursor: default;
+}
+
+.numLow {
+  background: rgba(77, 150, 255, 0.3);
+  border-color: var(--color-sky);
+  color: var(--color-sky);
+  opacity: 0.6;
+}
+
+.numHigh {
+  background: rgba(255, 107, 107, 0.3);
+  border-color: var(--color-coral);
+  color: var(--color-coral);
+  opacity: 0.6;
+}
+
+.numCorrect {
+  background: rgba(107, 203, 119, 0.4);
+  border-color: var(--color-mint);
+  color: var(--color-mint);
+}
+
+.numOutOfRange {
+  opacity: 0.25;
 }
 
 .history {
@@ -168,28 +219,20 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-.concedeButton {
-  font-size: var(--font-size-md);
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--border-radius);
-  background: rgba(255, 107, 107, 0.2);
-  border: 2px solid var(--color-coral);
-  color: var(--color-coral);
-  min-height: var(--touch-target);
-  min-width: 100px;
-  font-weight: 700;
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
 }
 
-.claimWinButton {
-  font-size: var(--font-size-md);
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--border-radius);
-  background: linear-gradient(135deg, var(--color-primary), #ffb347);
-  color: var(--color-text-dark);
-  min-height: var(--touch-target);
-  min-width: 100px;
-  font-weight: 700;
-  box-shadow: var(--shadow-glow);
+.skipLink:hover {
+  color: var(--color-text);
 }
 
 .resultCard {
@@ -242,4 +285,22 @@
   color: var(--color-text-dark);
   font-weight: 700;
   min-height: var(--touch-target);
+}
+
+.resultButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
 }

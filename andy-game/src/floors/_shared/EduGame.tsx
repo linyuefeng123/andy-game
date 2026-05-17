@@ -2,7 +2,6 @@ import { useState, useCallback, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { FloorProps } from '../_registry';
 import { HELPER_CHARACTERS } from '../_registry';
-import { getFloorMeta } from '../_registry';
 import { useGameStore } from '../../store/useGameStore';
 import { playSound } from '../../utils/audio';
 import styles from './EduGame.module.css';
@@ -28,7 +27,7 @@ interface EduGameProps extends FloorProps {
   config: EduGameConfig;
 }
 
-export default function EduGame({ onExit, onComplete, config, helperChar, helpRemaining, onHelpUsed, onConcede, onClaimWin }: EduGameProps) {
+export default function EduGame({ onExit, onComplete, config, helperChar, helpRemaining, onHelpUsed, onConcede, onReplay }: EduGameProps) {
   const language = useGameStore((s) => s.language);
   const helper = HELPER_CHARACTERS[helperChar];
   const totalRounds = config.totalRounds ?? config.questions.length;
@@ -92,14 +91,6 @@ export default function EduGame({ onExit, onComplete, config, helperChar, helpRe
 
   const handleConcede = () => {
     onConcede();
-    onComplete(1);
-    onExit();
-  };
-
-  const handleClaimWin = () => {
-    onClaimWin();
-    const meta = getFloorMeta(config.floorNumber);
-    onComplete(3, meta.reward);
     onExit();
   };
 
@@ -129,9 +120,14 @@ export default function EduGame({ onExit, onComplete, config, helperChar, helpRe
           <p className={styles.scoreText}>
             {score} / {questions.length}
           </p>
-          <button className={styles.finishButton} onClick={handleFinish}>
-            {language === 'zh' ? '🏠 继续冒险' : '🏠 Continue'}
-          </button>
+          <div className={styles.resultButtons}>
+            <button className={styles.replayButton} onClick={onReplay}>
+              🔄 再玩一次！
+            </button>
+            <button className={styles.finishButton} onClick={handleFinish}>
+              {language === 'zh' ? '🏠 继续冒险' : '🏠 Continue'}
+            </button>
+          </div>
         </motion.div>
       </div>
     );
@@ -212,11 +208,8 @@ export default function EduGame({ onExit, onComplete, config, helperChar, helpRe
         <button className={styles.helpButton} onClick={handleHelp} disabled={helpRemaining <= 0 || selected !== null}>
           {helper.emoji} 💡 {helpRemaining}
         </button>
-        <button className={styles.concedeButton} onClick={handleConcede}>
-          😊 {language === 'zh' ? '认输' : 'Give up'}
-        </button>
-        <button className={styles.claimWinButton} onClick={handleClaimWin}>
-          🏆 {language === 'zh' ? '认赢' : 'I win!'}
+        <button className={styles.skipLink} onClick={handleConcede}>
+          {language === 'zh' ? '跳过这局' : 'Skip'}
         </button>
       </div>
     </div>

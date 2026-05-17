@@ -1,0 +1,68 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--space-lg);
+}
+
+.modal {
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-2xl) var(--space-xl);
+  text-align: center;
+  max-width: 340px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(255, 217, 61, 0.3);
+}
+
+.fireEmoji {
+  font-size: 36px;
+  margin-bottom: var(--space-md);
+  letter-spacing: 4px;
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.reward {
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+  margin-bottom: var(--space-xl);
+  font-weight: 700;
+}
+
+.claimButton {
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  padding: var(--space-md) var(--space-2xl);
+  border-radius: var(--border-radius);
+  min-height: var(--touch-target);
+  min-width: 140px;
+  box-shadow: var(--shadow-glow);
+}
+
+.closeButton {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--border-radius);
+  min-height: var(--touch-target);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.claimedEmoji {
+  font-size: 64px;
+  margin-bottom: var(--space-md);
+}

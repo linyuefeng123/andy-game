@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { FloorProps } from '../_registry';
 import { HELPER_CHARACTERS } from '../_registry';
 import type { FloorReward } from '../../store/useGameStore';
+import { useGameStore } from '../../store/useGameStore';
 import DiamondBoard from './DiamondBoard';
 import {
   BOARD_SIZE,
@@ -44,7 +45,7 @@ const REWARD_OPTIONS: FloorReward[] = [
   },
 ];
 
-export default function DiamondChessGame({ onExit, onComplete, helperChar, helpRemaining, onHelpUsed, onConcede, onClaimWin }: FloorProps) {
+export default function DiamondChessGame({ onExit, onComplete, helperChar, helpRemaining, onHelpUsed, onConcede, onReplay }: FloorProps) {
   const [board, setBoard] = useState<CellOwner[][]>(
     () => INITIAL_BOARD.map((r) => [...r])
   );
@@ -58,6 +59,8 @@ export default function DiamondChessGame({ onExit, onComplete, helperChar, helpR
   const [helpHint, setHelpHint] = useState<{ from: Pos; to: Pos } | null>(null);
 
   const helper = HELPER_CHARACTERS[helperChar];
+  const difficulty = useGameStore.getState().getDifficultyLevel(4);
+  const randomRate = difficulty === 1 ? 0.4 : difficulty === 2 ? 0.2 : 0.1;
 
   const handleCellClick = useCallback(
     (r: number, c: number) => {
@@ -99,7 +102,7 @@ export default function DiamondChessGame({ onExit, onComplete, helperChar, helpR
 
         // AI move
         setTimeout(() => {
-          const aiMove = findAIMove(newBoard);
+          const aiMove = findAIMove(newBoard, randomRate);
           if (aiMove) {
             const { from, to } = aiMove;
             const aiBoard = newBoard.map((row) => [...row]);
@@ -129,19 +132,12 @@ export default function DiamondChessGame({ onExit, onComplete, helperChar, helpR
 
   const handleConcede = () => {
     onConcede();
-    setWinner(2);
-    onComplete(1);
-  };
-
-  const handleClaimWin = () => {
-    onClaimWin();
-    setWinner(1);
-    setShowRewardChoice(true);
+    onExit();
   };
 
   const handleHelp = () => {
     if (helpRemaining <= 0 || winner !== 0 || currentPlayer !== 1) return;
-    const aiMove = findAIMove(board);
+    const aiMove = findAIMove(board, randomRate);
     if (aiMove) {
       setHelpHint(aiMove);
       onHelpUsed();
@@ -184,6 +180,7 @@ export default function DiamondChessGame({ onExit, onComplete, helperChar, helpR
         onCellClick={handleCellClick}
         disabled={currentPlayer !== 1 || winner !== 0}
         helpHint={helpHint}
+        showGuide={true}
       />
 
       {/* Diamond shape hint */}
@@ -196,11 +193,8 @@ export default function DiamondChessGame({ onExit, onComplete, helperChar, helpR
           <button className={styles.helpButton} onClick={handleHelp} disabled={helpRemaining <= 0 || currentPlayer !== 1}>
             {helper.emoji} 💡 {helpRemaining}
           </button>
-          <button className={styles.concedeButton} onClick={handleConcede}>
-            😊 认输
-          </button>
-          <button className={styles.claimWinButton} onClick={handleClaimWin}>
-            🏆 认赢
+          <button className={styles.skipLink} onClick={handleConcede}>
+            跳过这局
           </button>
         </div>
       )}
@@ -244,6 +238,36 @@ export default function DiamondChessGame({ onExit, onComplete, helperChar, helpR
         )}
       </AnimatePresence>
 
+      {/* Win without reward choice (simple) */}
+      <AnimatePresence>
+        {winner === 1 && !showRewardChoice && (
+          <motion.div
+            className={styles.overlay}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className={styles.rewardModal}
+              initial={{ scale: 0.8, y: 30 }}
+              animate={{ scale: 1, y: 0 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+            >
+              <span className={styles.rewardTitleEmoji}>🌟</span>
+              <h2 className={styles.rewardTitle}>你真棒！</h2>
+              <div className={styles.resultButtons}>
+                <button className={styles.replayButton} onClick={onReplay}>
+                  🔄 再玩一次！
+                </button>
+                <button className={styles.loseButton} onClick={handleSelectReward.bind(null, REWARD_OPTIONS[0])}>
+                  ⭐ 继续冒险
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Lose overlay */}
       <AnimatePresence>
         {winner === 2 && (
@@ -261,9 +285,14 @@ export default function DiamondChessGame({ onExit, onComplete, helperChar, helpR
             >
               <span className={styles.loseEmoji}>💪</span>
               <h2 className={styles.loseText}>再接再厉！</h2>
-              <button className={styles.loseButton} onClick={handleLoseExit}>
-                🏠 返回大厅
-              </button>
+              <div className={styles.resultButtons}>
+                <button className={styles.replayButton} onClick={onReplay}>
+                  🔄 再玩一次！
+                </button>
+                <button className={styles.loseButton} onClick={handleLoseExit}>
+                  🏠 返回大厅
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}

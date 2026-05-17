@@ -70,6 +70,64 @@
   margin-bottom: var(--space-md);
 }
 
+/* Achievement badges */
+.badgeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.badgeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  gap: var(--space-xs);
+  min-height: 120px;
+}
+
+.badgeUnlocked {
+  background: linear-gradient(135deg, rgba(255, 217, 61, 0.15), rgba(107, 203, 119, 0.15));
+  border: 2px solid rgba(255, 217, 61, 0.4);
+}
+
+.badgeLocked {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 0.6;
+}
+
+.badgeIcon {
+  font-size: 36px;
+  display: block;
+}
+
+.badgeIconLocked {
+  font-size: 36px;
+  display: block;
+  filter: grayscale(1);
+}
+
+.badgeName {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.badgeNameLocked {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.badgeDesc {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.3;
+}
+
 /* Reward grid */
 .rewardGrid {
   display: grid;

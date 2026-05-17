@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andy 100层房子 - 开发计划看板</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0f1e;
+    --bg-card: #161b33;
+    --bg-card-hover: #1e2340;
+    --sky-top: #16213e;
+    --sky-bottom: #0f3460;
+    --gold: #ffd93d;
+    --gold-dim: #ffb347;
+    --coral: #ff6b6b;
+    --mint: #6bcb77;
+    --sky: #4d96ff;
+    --lavender: #9b72cf;
+    --text: #ffffff;
+    --text-muted: #a0a0c0;
+    --text-dim: #5a5a7a;
+    --border: rgba(255,255,255,0.08);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  html { font-size: 16px; }
+
+  body {
+    font-family: 'Nunito', -apple-system, 'Segoe UI', sans-serif;
+    background: linear-gradient(170deg, var(--bg) 0%, var(--sky-top) 40%, var(--sky-bottom) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Starfield */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 15% 85%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 55% 75%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 85% 15%, rgba(255,255,255,0.5), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .app { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header .subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .reset-btn {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .reset-btn:hover { color: var(--coral); border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.08); }
+
+  /* Total progress */
+  .total-progress {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .total-progress::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--mint));
+    box-shadow: 0 0 16px rgba(255,217,61,0.4);
+  }
+
+  .total-progress .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .total-progress .label { font-weight: 700; font-size: 0.9rem; }
+
+  .total-progress .stats {
+    display: flex;
+    gap: 16px;
+    font-size: 0.8rem;
+  }
+
+  .total-progress .stat { display: flex; align-items: center; gap: 4px; }
+  .total-progress .stat .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .progress-track {
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--mint));
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 12px rgba(255,217,61,0.3);
+  }
+
+  /* Phase */
+  .phase {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+  }
+
+  .phase:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+
+  .phase-header:hover { background: rgba(255,255,255,0.03); }
+
+  .phase-chevron {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    transition: transform 0.3s;
+    width: 16px;
+    text-align: center;
+  }
+
+  .phase.collapsed .phase-chevron { transform: rotate(-90deg); }
+
+  .phase-icon { font-size: 1.2rem; }
+
+  .phase-title {
+    font-weight: 800;
+    font-size: 0.95rem;
+    flex: 1;
+  }
+
+  .phase-time {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.05);
+    padding: 2px 10px;
+    border-radius: 10px;
+  }
+
+  .phase-count {
+    font-size: 0.75rem;
+    font-weight: 700;
+    min-width: 28px;
+    text-align: center;
+  }
+
+  .phase-progress-bar {
+    width: 80px;
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .phase-progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.4s;
+  }
+
+  .phase-body {
+    border-top: 1px solid var(--border);
+    padding: 8px 12px 12px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .phase.collapsed .phase-body { display: none; }
+
+  /* Task */
+  .task {
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.02);
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    align-items: flex-start;
+  }
+
+  .task:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: var(--border);
+  }
+
+  /* Status button */
+  .status-btn {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+  }
+
+  .status-btn:hover { transform: scale(1.15); }
+
+  .status-btn[data-status="pending"] {
+    border-color: var(--text-dim);
+    color: var(--text-dim);
+  }
+  .status-btn[data-status="confirmed"] {
+    border-color: var(--sky);
+    color: var(--sky);
+    background: rgba(77,150,255,0.12);
+  }
+  .status-btn[data-status="in_progress"] {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(255,217,61,0.12);
+    animation: pulse-ring 2s infinite;
+  }
+  .status-btn[data-status="done"] {
+    border-color: var(--mint);
+    color: var(--mint);
+    background: rgba(107,203,119,0.12);
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,217,61,0.3); }
+    50% { box-shadow: 0 0 0 4px rgba(255,217,61,0); }
+  }
+
+  .task-body { flex: 1; min-width: 0; }
+
+  .task-id {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--sky);
+    background: rgba(77,150,255,0.1);
+    padding: 1px 7px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+
+  .task-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+
+  .task[data-status="done"] .task-title {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .task-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+
+  .task-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .task-file {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.04);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .complexity {
+    font-size: 0.6rem;
+    font-weight: 800;
+    padding: 1px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .complexity-S { background: rgba(107,203,119,0.15); color: var(--mint); }
+  .complexity-M { background: rgba(255,217,61,0.15); color: var(--gold); }
+  .complexity-L { background: rgba(255,107,107,0.15); color: var(--coral); }
+
+  /* Copy prompt */
+  .copy-btn {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--lavender);
+    background: rgba(155,114,207,0.12);
+    border: 1px solid rgba(155,114,207,0.2);
+    padding: 3px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .copy-btn:hover { background: rgba(155,114,207,0.25); border-color: var(--lavender); }
+  .copy-btn.copied { color: var(--mint); background: rgba(107,203,119,0.15); border-color: rgba(107,203,119,0.3); }
+
+  /* Status label */
+  .status-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  .status-label[data-status="pending"] { background: rgba(90,90,122,0.2); color: var(--text-dim); }
+  .status-label[data-status="confirmed"] { background: rgba(77,150,255,0.12); color: var(--sky); }
+  .status-label[data-status="in_progress"] { background: rgba(255,217,61,0.12); color: var(--gold); }
+  .status-label[data-status="done"] { background: rgba(107,203,119,0.12); color: var(--mint); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 24px;
+    border-radius: 24px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+    opacity: 0;
+    z-index: 100;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .app { padding: 16px 10px 48px; }
+    .header h1 { font-size: 1.3rem; }
+    .task { padding: 10px 10px; gap: 8px; }
+    .phase-progress-bar { width: 50px; }
+    .task-file { max-width: 140px; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PHASES = [
+  {
+    id: 'phase1',
+    title: 'Phase 1: 关键Bug修复',
+    icon: '🐛',
+    time: '1-2天',
+    color: '#ff6b6b',
+    tasks: [
+      { id: '1.1', title: 'f009缺少getFloorMeta导入 — 运行时崩溃', desc: 'getFloorMeta(9)被调用但从未从_registry导入，赢牌时触发ReferenceError。修复：添加import', file: 'src/floors/f009-simple-cards/index.tsx', complexity: 'S', prompt: '修复 f009 运行时崩溃：在 src/floors/f009-simple-cards/index.tsx 第4行添加 `import { getFloorMeta } from "../_registry";`。当前第190行调用 getFloorMeta(9) 但未导入，赢牌时触发 ReferenceError。' },
+      { id: '1.2', title: 'getFloorComponent每次渲染创建新lazy() — 游戏状态丢失', desc: 'getFloorComponent()每次调用都执行lazy(loader)，FloorPage每次re-render创建新组件类型，React卸载/重载整个游戏，丢失所有进度', file: 'src/floors/_registry.ts, src/pages/FloorPage/index.tsx', complexity: 'S', prompt: '修复 getFloorComponent 游戏状态丢失：在 src/floors/_registry.ts 中，当前 getFloorComponent 每次调用都执行 lazy()，导致 FloorPage re-render 时创建新组件类型，React 卸载重载整个游戏丢失进度。修复方案：添加模块级缓存 `const lazyCache: Record<number, React.LazyExoticComponent<FloorProps>> = {};`，getFloorComponent 中先查缓存再创建。' },
+      { id: '1.3', title: 'elevatorUsesRemaining被持久化 — 违背设计意图', desc: 'elevatorUsesRemaining在partialize中被持久化到localStorage。设计意图是每次新会话重置3次，但持久化导致隔天回来电梯次数仍为0', file: 'src/store/useGameStore.ts', complexity: 'S', prompt: '修复 elevatorUsesRemaining 持久化问题：在 src/store/useGameStore.ts 的 partialize 返回对象中移除 elevatorUsesRemaining，让它使用默认值3，这样每次新会话重置为3次。' },
+      { id: '1.4', title: 'PWA图标文件缺失 — 安装失败', desc: 'manifest.json引用的图标文件icon-192.png和icon-512.png不存在，PWA无法安装', file: 'public/icon-192.png, public/icon-512.png', complexity: 'S', prompt: '修复 PWA 图标缺失：基于 public/favicon.svg（或任何现有图标）生成 public/icon-192.png 和 public/icon-512.png，确保 manifest.json 引用的图标文件存在。可以用 canvas 或在线工具生成。' },
+      { id: '1.5', title: 'playSound不检查audioEnabled — 音效无视用户设置', desc: 'playSound()从未检查useGameStore.getState().audioEnabled，音效永远播放', file: 'src/utils/audio.ts', complexity: 'S', prompt: '修复 playSound 无视用户设置：在 src/utils/audio.ts 的 playSound 函数开头添加 `if (!useGameStore.getState().audioEnabled) return;`，确保音效开关生效。' },
+      { id: '1.6', title: 'addStars在completeFloor外调用 — 双重渲染', desc: 'completeFloor先set({...})再get().addStars(stars)，产生两次状态更新和两次渲染', file: 'src/store/useGameStore.ts', complexity: 'S', prompt: '修复 completeFloor 双重渲染：在 src/store/useGameStore.ts 的 completeFloor 中，将 totalStars 更新合并到同一个 set() 调用中：添加 `totalStars: get().totalStars + stars`，然后删除 `get().addStars(stars)` 那行。' },
+      { id: '1.7', title: '添加ErrorBoundary — 任何游戏崩溃导致白屏', desc: '全局无ErrorBoundary，任何楼层游戏报错会导致整个应用崩溃白屏。创建友好ErrorBoundary组件', file: '新建src/components/ErrorBoundary.tsx; 修改src/app/App.tsx', complexity: 'M', prompt: '添加全局 ErrorBoundary：1) 新建 src/components/ErrorBoundary.tsx，创建 class 组件捕获错误，渲染友好的"出了点问题"+ "返回大厅"按钮；2) 在 src/app/App.tsx 中用 ErrorBoundary 包裹 Routes，在 FloorPage 中用 ErrorBoundary 包裹 Suspense。' },
+    ]
+  },
+  {
+    id: 'phase2',
+    title: 'Phase 2: 架构改进',
+    icon: '🏗️',
+    time: '3-5天',
+    color: '#4d96ff',
+    tasks: [
+      { id: '2.1', title: '提取BoardGameShell共享组件', desc: '4个棋盘游戏重复相同的UI框架：状态栏、帮助/认输/认赢按钮、输赢覆盖层、Framer Motion弹簧动画。handleConcede/handleClaimWin在7个文件中复制粘贴', file: '新建src/floors/_shared/BoardGameShell.tsx; 修改f001/f004/f007/f009', complexity: 'L', prompt: '提取 BoardGameShell 共享组件：1) 新建 src/floors/_shared/BoardGameShell.tsx + .module.css，接收 gameInfo/board/actionButtons/helperChar/winner 等 props，统一渲染游戏外壳（状态栏、按钮、输赢覆盖层、弹簧动画）；2) 重构 f001/f004/f007/f009 使用 BoardGameShell，消除 handleConcede/handleClaimWin 的重复代码。' },
+      { id: '2.2', title: '清理setTimeout定时器', desc: '用户中途退出楼层时，setTimeout回调在已卸载组件上设置state，造成内存泄漏。涉及f001/f002/f004/f007/f009', file: '所有楼层组件的helpHint/AI move setTimeout', complexity: 'M', prompt: '清理 setTimeout 定时器泄漏：创建 src/hooks/useTimeout.ts hook，自动在 unmount 时清理 timer。然后在所有楼层组件中替换 setTimeout 调用：f001（helpHint + AI move）、f002（helpHint）、f004（helpHint + AI move）、f007（helpHint + AI move）、f009（helpHint + AI turn）中的 setTimeout 都改用 useTimeout。' },
+      { id: '2.3', title: '添加404路由和导航守卫', desc: '无catch-all路由，访问未定义URL显示空白；/elevator等页面无playerName守卫', file: 'src/app/App.tsx', complexity: 'S', prompt: '添加404路由和导航守卫：在 src/app/App.tsx 中：1) 添加 `<Route path="*" element={<Navigate to="/" replace />} />` 作为 catch-all；2) 为 /elevator、/floor/:floorId 等路由添加 playerName 守卫，无 playerName 时重定向到首页。' },
+      { id: '2.4', title: '修复依赖问题', desc: 'howler和@types/howler已安装但从未使用（约30KB死代码）；vite和@vitejs/plugin-react同时在dependencies和devDependencies中', file: 'package.json', complexity: 'S', prompt: '修复 package.json 依赖问题：1) 移除未使用的 howler 和 @types/howler 依赖；2) 将 vite 和 @vitejs/plugin-react 从 dependencies 移到仅 devDependencies（当前同时出现在两处）。然后运行 npm install 更新 lock 文件。' },
+      { id: '2.5', title: '修复CSS冲突', desc: '全局button:active { transform: scale(0.95) }与Framer Motion的whileTap冲突，导致按钮闪烁', file: 'src/styles/global.css', complexity: 'S', prompt: '修复 CSS 冲突：在 src/styles/global.css 中移除全局 `button:active { transform: scale(0.95) }` 规则（约第62-64行），因为它与 Framer Motion 的 whileTap 动画冲突导致按钮闪烁。需要按钮点击效果的地方统一使用 FM 的 whileTap。' },
+      { id: '2.6', title: '修复WelcomePage星星位置', desc: 'Math.random()在渲染函数中直接调用，每次re-render星星位置变化，星星跳动', file: 'src/pages/WelcomePage/index.tsx', complexity: 'S', prompt: '修复 WelcomePage 星星跳动：在 src/pages/WelcomePage/index.tsx 中，Math.random() 在渲染函数中直接调用（约30-41行），每次 re-render 星星位置变化。将星星位置提取为模块级常量数组或用 `useMemo(() => ..., [])` 缓存。' },
+      { id: '2.7', title: '修复biased洗牌算法', desc: 'sort(() => Math.random() - 0.5)产生不均匀分布。cardAI.ts已有正确的Fisher-Yates实现', file: 'EduGame.tsx, f003/f005/f006/f008', complexity: 'S', prompt: '修复 biased 洗牌算法：1) 提取 Fisher-Yates 到 src/utils/shuffle.ts（参考 cardAI.ts:38-44 的正确实现）；2) 替换 EduGame.tsx:226-229 和 f003/f005/f006/f008 中所有 `sort(() => Math.random() - 0.5)` 为新的 shuffle 函数调用。' },
+      { id: '2.8', title: '棋盘组件响应式resize', desc: '从window.innerWidth计算cellSize但不监听resize，旋转屏幕后棋盘大小不变', file: 'GomokuBoard.tsx, DiamondBoard.tsx', complexity: 'M', prompt: '修复棋盘组件响应式 resize：在 GomokuBoard.tsx 和 DiamondBoard.tsx 中，当前从 window.innerWidth 计算 cellSize 但不监听 resize 事件。添加 resize 事件监听（使用 useEffect + debounce），动态更新宽度 state，组件卸载时清理监听器。' },
+      { id: '2.9', title: '添加React.memo优化', desc: 'SVG棋盘组件在父组件每次状态变化时都重新渲染', file: 'GomokuBoard.tsx, DiamondBoard.tsx', complexity: 'S', prompt: '添加 React.memo 优化：用 React.memo() 包裹 GomokuBoard 和 DiamondBoard 组件的导出，避免父组件状态变化时不必要的棋盘重新渲染。' },
+      { id: '2.10', title: 'floorId空值检查', desc: 'parseInt(floorId ?? "1", 10)静默默认到楼层1，无效URL不会提示', file: 'src/pages/FloorPage/index.tsx', complexity: 'S', prompt: '修复 floorId 空值检查：在 src/pages/FloorPage/index.tsx 第13行，当前 `parseInt(floorId ?? "1", 10)` 静默默认到楼层1。修改为对无效 floorId（NaN 或超出范围）显示已有的"建设中"页面，而不是静默回退。' },
+      { id: '2.11', title: '改进Suspense fallback', desc: 'fallback只是"..."，在慢网络下用户以为应用崩溃', file: 'src/pages/FloorPage/index.tsx', complexity: 'S', prompt: '改进 Suspense fallback：在 src/pages/FloorPage/index.tsx 第139行附近，将 fallback="..." 替换为居中加载动画 + "加载中..." 文字，慢网络下不会让用户以为应用崩溃。' },
+      { id: '2.12', title: '懒加载AudioContext并断开振荡器', desc: 'AudioContext在模块加载时创建（多数浏览器需要用户手势）; 振荡器用后不断开，长时间游玩造成内存压力', file: 'src/utils/audio.ts', complexity: 'M', prompt: '修复 AudioContext 和振荡器问题：在 src/utils/audio.ts 中：1) 改为懒创建 AudioContext（首次 playSound 时创建，而非模块加载时），因为多数浏览器需要用户手势才能创建；2) 振荡器 stop() 后调用 disconnect()，避免长时间游玩内存压力。' },
+    ]
+  },
+  {
+    id: 'phase3',
+    title: 'Phase 3: 核心游戏循环重设计',
+    icon: '🎮',
+    time: '3-4天',
+    color: '#ffd93d',
+    tasks: [
+      { id: '3.1', title: '电梯系统重设计：移除3次硬限制', desc: '3次电梯限制导致约10分钟就结束会话，且无任何方式获取更多次数。改为"电梯票"系统：初始3张上限5张，完成楼层+1票，3星+2票，0票时灰色按钮+鼓励文字', file: 'useGameStore.ts, useElevator.ts, LobbyPage, ElevatorPage', complexity: 'M', prompt: '重设计电梯系统：1) 在 useGameStore.ts 中将 elevatorUsesRemaining 改为 elevatorTickets（初始3，上限5），完成楼层+1票，3星完成+2票；2) 更新 useElevator.ts 适配新字段名；3) 在 LobbyPage 将"Andy累了"死胡同改为0票时灰色按钮+"完成一层获得更多车票！"鼓励文字；4) 确保票数不在 partialize 中（配合1.3）。' },
+      { id: '3.2', title: '每个游戏添加"再玩一次"按钮', desc: '任何游戏结束后只有"返回大厅"，没有重玩选项。在所有游戏完成界面添加醒目的"🔄 再玩一次！"按钮，不消耗电梯票', file: '所有楼层输赢覆盖层, BoardGameShell.tsx, EduGame.tsx', complexity: 'M', prompt: '添加"再玩一次"按钮：1) 在 BoardGameShell 和 EduGame 的输赢覆盖层中添加醒目的"🔄 再玩一次！"按钮，点击后通过 key prop 强制组件重新挂载实现重置；2) 再玩不消耗电梯票（已经在该楼层）；3) 确保所有楼层游戏（f001-f009）的完成界面都有此按钮。' },
+      { id: '3.3', title: 'IQ系统重设计：改为正向激励的冒险值', desc: '当前IQ系统惩罚孩子——认输-1、认赢-2，AndyPage显示红色"需要努力"标签。改为"冒险值"：只增不减，0-30新手冒险家🌱/30-60勇敢探索者⚡/60-100聪明小达人🌟/100-150超级英雄🦸/150+传奇冒险王👑，颜色只用绿色和金色', file: 'useGameStore.ts, AndyPage/index.tsx', complexity: 'M', prompt: '重设计 IQ 系统为冒险值：1) 在 useGameStore.ts 中将 iq 重命名为 adventurePoints（冒险值），移除所有负数调整（adjustIq 改为 addAdventurePoints），放弃=0冒险值（不扣分），完成=获得星星数作为冒险值；2) 在 AndyPage 中将标签改为正面：0-30"新手冒险家"🌱/30-60"勇敢探索者"⚡/60-100"聪明小达人"🌟/100-150"超级英雄"🦸/150+"传奇冒险王"👑，颜色只用绿色和金色，不用红色。' },
+      { id: '3.4', title: '移除"认输"和"认赢"按钮，改为"跳过"', desc: '"认赢"对6岁孩子是个陷阱按钮（扣2冒险值但用奖杯emoji诱导点击）；"认输"用笑脸emoji但惩罚。完全移除"认赢"，"认输"改为"跳过这局"小文字链接，跳过不扣分', file: 'BoardGameShell.tsx, EduGame.tsx, 所有楼层组件, _registry.ts', complexity: 'M', prompt: '移除"认输"和"认赢"按钮：1) 完全移除"认赢"按钮；2) 将"认输"改为"跳过这局"小文字链接（不是大按钮），移到底部位置；3) 跳过不扣分，只是0星0冒险值；4) 从 FloorProps 移除 onConcede 和 onClaimWin，简化接口；5) 更新 BoardGameShell、EduGame 和所有楼层组件。' },
+    ]
+  },
+  {
+    id: 'phase4',
+    title: 'Phase 4: 成瘾性与参与度机制',
+    icon: '✨',
+    time: '5-7天',
+    color: '#9b72cf',
+    tasks: [
+      { id: '4.1', title: '每日登录奖励和连续天数', desc: '每天首次打开弹庆祝弹窗"欢迎回来！连续第X天！"，奖励电梯票（1天+1票，3天+2票，7天+3票），日历可视化打卡记录', file: 'useGameStore.ts(添加lastPlayDate/streakDays/claimDailyReward), LobbyPage', complexity: 'M', prompt: '实现每日登录奖励：1) 在 useGameStore.ts 添加 lastPlayDate、streakDays、claimDailyReward 字段；2) 每天（不同日期）首次打开时，在 LobbyPage 弹庆祝弹窗"欢迎回来！连续第X天！"，奖励电梯票（1天+1票，3天+2票，7天+3票）；3) 添加简单的日历可视化显示近7天打卡记录。' },
+      { id: '4.2', title: '星星商店', desc: '星星只累积不可消费，缺乏消费驱动。新页面从大厅进入，可购买Andy头像配件（帽子5⭐/眼镜8⭐/披风15⭐）、房间互动装饰（10-20⭐）、电梯票（3⭐/张）', file: '新建src/pages/ShopPage/, useGameStore.ts(添加spendStars/purchasedItems)', complexity: 'L', prompt: '实现星星商店：1) 新建 src/pages/ShopPage/（index.tsx + index.module.css），从大厅进入；2) 在 useGameStore.ts 添加 spendStars 和 purchasedItems；3) 商店商品：Andy头像配件（帽子5⭐/眼镜8⭐/披风15⭐）、房间互动装饰（10-20⭐）、电梯票（3⭐/张）；4) 购买项在 AndyRoomPage 和 AndyAvatar 中展示。' },
+      { id: '4.3', title: '成就徽章系统', desc: '当前成就页只是楼层列表，没有里程碑徽章或惊喜解锁。定义成就如"初次冒险"/"探索者"/"满分王"/"收藏家"/"坚持不懈"/"全星通关"/"夜猫子"，解锁时有confetti动画和星星奖励', file: 'useGameStore.ts(添加achievements), AchievementsPage/index.tsx(重做), 新建src/utils/achievements.ts', complexity: 'L', prompt: '实现成就徽章系统：1) 新建 src/utils/achievements.ts 定义成就：初次冒险（完成第一层）、探索者（游玩5个不同楼层）、满分王（3星）、收藏家（5个奖励）、坚持不懈（同一楼玩3次）、全星通关（所有3星）、夜猫子（晚8点后游玩）；2) 在 useGameStore 添加 achievements 和 checkAchievements；3) 重做 AchievementsPage 显示徽章网格；4) 解锁时有 confetti 动画和星星奖励。' },
+      { id: '4.4', title: '升级仪式', desc: '冒险值跨越阈值时触发全屏庆祝——屏幕闪光、Andy跳跃、星星雨、新称号公告配fanfare音效。这是让进步"可感知"的关键', file: 'LobbyPage/index.tsx, 新建src/components/LevelUpCeremony.tsx', complexity: 'M', prompt: '实现升级仪式：1) 新建 src/components/LevelUpCeremony.tsx；2) 冒险值跨越阈值（30/60/100/150）时在 LobbyPage 触发全屏庆祝：屏幕闪光、Andy跳跃、星星雨动画、新称号公告配 fanfare 音效；3) 使用 framer-motion 实现动画；4) 3秒后自动消失或点击关闭。' },
+      { id: '4.5', title: '100%通关仪式', desc: '所有已实现楼层3星完成时，Andy获得"房子主人"称号+金色钥匙+烟花动画+未来楼层预告', file: 'LobbyPage/index.tsx, 新建src/components/CompletionCeremony.tsx', complexity: 'M', prompt: '实现100%通关仪式：1) 新建 src/components/CompletionCeremony.tsx；2) 当所有已实现楼层3星完成时在 LobbyPage 触发：Andy获得"房子主人"称号+金色钥匙+烟花动画+未来楼层预告；3) 使用 framer-motion 实现烟花效果；4) 持久化已触发标记避免重复。' },
+      { id: '4.6', title: '神秘宝箱（可变奖励）', desc: '完成楼层后10%概率发现神秘宝箱，"点击打开"动画+悬念延迟→随机奖品（额外星星/头像配件/房间装饰），创造可变奖励计划', file: 'useGameStore.ts, LobbyPage/index.tsx, 新建src/components/MysteryBox.tsx', complexity: 'M', prompt: '实现神秘宝箱：1) 新建 src/components/MysteryBox.tsx；2) 完成楼层后10%概率触发神秘宝箱弹出；3) "点击打开"动画 + 2秒悬念延迟 → 随机奖品（额外星星/头像配件/房间装饰）；4) 使用 framer-motion 实现开箱动画（宝箱摇晃→打开→光芒→奖品展示）；5) 在 useGameStore 添加 mysteryBoxPrizes 记录。' },
+    ]
+  },
+  {
+    id: 'phase5',
+    title: 'Phase 5: 内容与适龄化',
+    icon: '📚',
+    time: '5-7天',
+    color: '#ffb4a2',
+    tasks: [
+      { id: '5.1', title: '扩充内容池', desc: '内容池太小，2-3次游玩就看到重复题目。英语词汇16→50+词，拼音20→60+字，颜色10→18色，成语12→30个', file: 'f003, f005, f006, f008', complexity: 'M', prompt: '扩充内容池：1) f005英语词汇从16→50+词，增加动物/身体/食物/数字/家人类别；2) f006拼音从20→60+字，增加一年级常见字；3) f003颜色从10→18色，增加灰色/金色/银色/浅蓝/深绿/珊瑚色等；4) f008成语从12→30个，增加带emoji插图的简单成语。' },
+      { id: '5.2', title: '增加难度递进', desc: '所有游戏每次玩法完全相同，无适应性。基于playCount调整：棋盘AI随机率递减、教育游戏选项递增、猜数字范围递增、显示难度标签', file: '所有楼层index.tsx, useGameStore.ts(每楼层添加difficultyLevel)', complexity: 'L', prompt: '实现难度递进系统：1) 在 useGameStore 为每楼层添加 difficultyLevel（基于 playCount 计算）；2) 棋盘AI：随机走子从40%（首次）递减到10%（5次+）；3) 教育游戏：选项从3→4→5个；4) 猜数字：范围1-50→1-100；5) 显示难度标签：⭐简单/⭐⭐中等/⭐⭐⭐困难；6) 各楼层读取 difficultyLevel 调整参数。' },
+      { id: '5.3', title: '简化过于复杂的游戏', desc: '猜数字需键盘+二分查找思维、钻石棋目标太抽象、成语6岁不懂含义、斗地主牌型规则太复杂', file: 'f002, f004, f008, f009', complexity: 'L', prompt: '简化过于复杂的游戏：1) f002猜数字：改为可视化数字线+点击猜测，范围1-20起步，用温度计视觉隐喻（红/蓝渐变提示远近）；2) f004钻石棋：在棋盘上添加菱形目标虚线轮廓，添加动画教程箭头"把这颗移到这里！"；3) f008成语填空：为每个成语添加emoji插图提供视觉线索（画龙点睛→🐉👁️✨）；4) f009简化斗地主：改为"比大小"模式（每次出一张牌，大的赢），类似War纸牌游戏。' },
+      { id: '5.4', title: '增大触摸目标', desc: '五子棋和斗兽棋格子太小（约38px），6岁孩子精细运动技能尚在发展，Apple推荐最小44px', file: 'GomokuBoard.tsx, f007, f009', complexity: 'M', prompt: '增大触摸目标：1) GomokuBoard.tsx：考虑五子棋从9x9改为7x7，或将 cellSize 上限提高到55px；2) f007斗兽棋：确保每格≥44px；3) f009简化斗地主：确保牌的触摸目标≥44px；4) Apple HIG推荐最小触摸目标44px，6岁孩子需要更大。' },
+      { id: '5.5', title: '添加交互式教程', desc: '游戏说明全是文字，识字不多的6岁孩子无法理解规则。首次进入楼层时显示分步动画教程：高亮区域、动画箭头演示、"看爷爷下一局！"演示', file: '新建src/floors/_shared/TutorialOverlay.tsx, 各楼层index.tsx', complexity: 'L', prompt: '添加交互式教程：1) 新建 src/floors/_shared/TutorialOverlay.tsx；2) 首次进入楼层时显示分步动画教程：高亮游戏区域，动画箭头演示操作，"看爷爷下一局！"用动画演示走法；3) 无文字，纯视觉+emoji；4) 在 useGameStore 存储已看教程状态，老玩家跳过；5) 各楼层添加 tutorialSteps 配置。' },
+    ]
+  },
+  {
+    id: 'phase6',
+    title: 'Phase 6: 打磨优化',
+    icon: '💎',
+    time: '3-4天',
+    color: '#6bcb77',
+    tasks: [
+      { id: '6.1', title: '音效增强', desc: '添加新音效类型：pop(按钮)、whoosh(页面切换)、tada(成就)、coin(星星)。使用musicEnabled播放简单背景音乐循环（Web Audio API生成）', file: 'src/utils/audio.ts, 新建src/utils/sounds.ts', complexity: 'M', prompt: '音效增强：1) 在 src/utils/audio.ts 或新建 sounds.ts 中添加音效类型：pop（按钮点击）、whoosh（页面切换）、tada（成就解锁）、coin（获得星星）；2) 使用 Web Audio API 生成简单背景音乐循环（配合 musicEnabled 开关）；3) 根据游戏上下文调整音量。' },
+      { id: '6.2', title: 'PWA完善', desc: '预缓存关键JS/CSS资源（当前只缓存/和index.html），manifest添加description和screenshots，index.html添加Apple touch icon', file: 'public/sw.js, public/manifest.json, index.html', complexity: 'S', prompt: 'PWA 完善：1) 在 public/sw.js 中预缓存关键 JS/CSS 资源（当前只缓存 / 和 index.html）；2) 在 manifest.json 添加 description 和 screenshots 字段；3) 在 index.html 添加 Apple touch icon link。' },
+      { id: '6.3', title: 'AI多样性改进', desc: '斗兽棋AI几乎确定性贪心，牌AI永远出最小牌，太可预测。增加随机策略选择和虚张声势', file: 'jungleAI.ts, cardAI.ts, gomokuAI.ts', complexity: 'M', prompt: 'AI 多样性改进：1) 斗兽棋 jungleAI.ts：增加随机策略选择（进攻型/防守型/调皮型），每局随机选一种；2) 牌AI cardAI.ts：增加出大牌概率和"虚张声势"pass概率；3) 五子棋 gomokuAI.ts：随机率根据难度调整（配合5.2的难度递进系统）。' },
+      { id: '6.4', title: '动画打磨', desc: '大厅添加浮动粒子效果（萤火虫/星星），房间装饰可交互（猫点击喵叫、蜡烛点击闪烁、植物点击生长），获得星星时添加星星雨效果', file: 'LobbyPage/index.tsx, AndyRoomPage/index.tsx', complexity: 'M', prompt: '动画打磨：1) LobbyPage 添加浮动粒子效果（萤火虫/星星，CSS animation）；2) AndyRoomPage 装饰可交互：猫点击喵叫、蜡烛点击闪烁、植物点击生长动画；3) 获得星星时添加星星雨效果（从顶部飘落的星星粒子）。使用 framer-motion 和 CSS 动画实现。' },
+      { id: '6.5', title: '无障碍改进', desc: '为图标按钮添加aria-label，确保颜色对比度满足WCAG AA (4.5:1)，div交互元素添加role="button"和键盘处理，焦点管理优化', file: '所有页面和组件', complexity: 'M', prompt: '无障碍改进：1) 为所有图标按钮添加 aria-label；2) 检查颜色对比度满足 WCAG AA (4.5:1)，不满足的调整颜色；3) div 交互元素添加 role="button"和键盘处理（Enter/Space 触发）；4) 焦点管理优化（弹窗打开时 trap focus，关闭后恢复焦点）。' },
+    ]
+  }
+];
+
+const STATUS_ORDER = ['pending', 'confirmed', 'in_progress', 'done'];
+const STATUS_ICON = { pending: '○', confirmed: '◎', in_progress: '◑', done: '●' };
+const STATUS_LABEL = { pending: '待开发', confirmed: '已确认', in_progress: '开发中', done: '已完成' };
+
+const STORAGE_KEY = 'andy-dev-plan-status';
+
+function loadStatus() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  } catch { return {}; }
+}
+
+function saveStatus(status) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(status));
+}
+
+let taskStatus = loadStatus();
+
+function getStatus(taskId) {
+  return taskStatus[taskId] || 'pending';
+}
+
+function cycleStatus(taskId) {
+  const current = getStatus(taskId);
+  const idx = STATUS_ORDER.indexOf(current);
+  const next = STATUS_ORDER[(idx + 1) % STATUS_ORDER.length];
+  taskStatus[taskId] = next;
+  saveStatus(taskStatus);
+  render();
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+function copyPrompt(taskId, btn) {
+  const task = PHASES.flatMap(p => p.tasks).find(t => t.id === taskId);
+  if (!task) return;
+  navigator.clipboard.writeText(task.prompt).then(() => {
+    btn.classList.add('copied');
+    btn.textContent = '已复制 ✓';
+    showToast('📋 Prompt 已复制到剪贴板');
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.textContent = '复制Prompt';
+    }, 1500);
+  }).catch(() => {
+    showToast('复制失败，请手动复制');
+  });
+}
+
+function togglePhase(phaseId) {
+  const el = document.querySelector(`[data-phase="${phaseId}"]`);
+  el.classList.toggle('collapsed');
+}
+
+function resetAll() {
+  if (!confirm('确定重置所有任务状态？此操作不可撤销。')) return;
+  taskStatus = {};
+  saveStatus(taskStatus);
+  render();
+  showToast('已重置所有状态');
+}
+
+function computeStats() {
+  const all = PHASES.flatMap(p => p.tasks);
+  const done = all.filter(t => getStatus(t.id) === 'done').length;
+  const inProgress = all.filter(t => getStatus(t.id) === 'in_progress').length;
+  const confirmed = all.filter(t => getStatus(t.id) === 'confirmed').length;
+  const pending = all.length - done - inProgress - confirmed;
+  return { total: all.length, done, inProgress, confirmed, pending };
+}
+
+function phaseStats(phase) {
+  const done = phase.tasks.filter(t => getStatus(t.id) === 'done').length;
+  return { total: phase.tasks.length, done };
+}
+
+function render() {
+  const stats = computeStats();
+  const pct = Math.round((stats.done / stats.total) * 100);
+
+  let html = `
+    <div class="header">
+      <div>
+        <h1>📋 开发计划看板</h1>
+        <div class="subtitle">Andy的100层房子 — 共${stats.total}项任务，预估20-29天</div>
+      </div>
+      <button class="reset-btn" onclick="resetAll()">重置状态</button>
+    </div>
+
+    <div class="total-progress">
+      <div class="row">
+        <span class="label">总体进度 ${pct}%</span>
+        <div class="stats">
+          <span class="stat"><span class="dot" style="background:#5a5a7a"></span> 待开发 ${stats.pending}</span>
+          <span class="stat"><span class="dot" style="background:#4d96ff"></span> 已确认 ${stats.confirmed}</span>
+          <span class="stat"><span class="dot" style="background:#ffd93d"></span> 开发中 ${stats.inProgress}</span>
+          <span class="stat"><span class="dot" style="background:#6bcb77"></span> 已完成 ${stats.done}</span>
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:${pct}%"></div>
+      </div>
+    </div>
+  `;
+
+  for (const phase of PHASES) {
+    const ps = phaseStats(phase);
+    const ppct = Math.round((ps.done / ps.total) * 100);
+    const hasProgress = ps.done > 0;
+    const fillColor = hasProgress ? phase.color : 'rgba(255,255,255,0.1)';
+
+    html += `
+      <div class="phase" data-phase="${phase.id}">
+        <div class="phase-header" onclick="togglePhase('${phase.id}')">
+          <span class="phase-chevron">▼</span>
+          <span class="phase-icon">${phase.icon}</span>
+          <span class="phase-title">${phase.title}</span>
+          <span class="phase-time">${phase.time}</span>
+          <span class="phase-count" style="color:${phase.color}">${ps.done}/${ps.total}</span>
+          <div class="phase-progress-bar">
+            <div class="phase-progress-fill" style="width:${ppct}%;background:${fillColor}"></div>
+          </div>
+        </div>
+        <div class="phase-body">
+    `;
+
+    for (const task of phase.tasks) {
+      const status = getStatus(task.id);
+      html += `
+        <div class="task" data-status="${status}">
+          <button class="status-btn" data-status="${status}" onclick="cycleStatus('${task.id}')" title="点击切换状态">${STATUS_ICON[status]}</button>
+          <div class="task-body">
+            <span class="task-id">${task.id}</span>
+            <div class="task-title">${task.title}</div>
+            <div class="task-desc">${task.desc}</div>
+            <div class="task-meta">
+              ${task.file ? `<span class="task-file" title="${task.file}">${task.file}</span>` : ''}
+              <span class="complexity complexity-${task.complexity}">${task.complexity}</span>
+              <span class="status-label" data-status="${status}">${STATUS_LABEL[status]}</span>
+              <button class="copy-btn" onclick="copyPrompt('${task.id}', this)">复制Prompt</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    html += `</div></div>`;
+  }
+
+  document.getElementById('app').innerHTML = html;
+}
+
+render();
+</script>
+</body>
+</html>
