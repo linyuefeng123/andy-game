@@ -5,17 +5,20 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
+    "postinstall": "npm run build",
     "start": "node server.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
     "framer-motion": "^12.38.0",
     "howler": "^2.2.4",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.15.1",
+    "vite": "^8.0.12",
     "zustand": "^5.0.13"
   },
   "devDependencies": {
