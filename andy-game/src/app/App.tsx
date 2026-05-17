@@ -1,16 +1,40 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useGameStore } from '../store/useGameStore';
 import ErrorBoundary from '../components/ErrorBoundary';
-import WelcomePage from '../pages/WelcomePage';
-import LobbyPage from '../pages/LobbyPage';
-import ElevatorPage from '../pages/ElevatorPage';
-import FloorPage from '../pages/FloorPage';
-import AchievementsPage from '../pages/AchievementsPage';
-import AndyRoomPage from '../pages/AndyRoomPage';
-import FloorMapPage from '../pages/FloorMapPage';
-import AndyPage from '../pages/AndyPage';
-import ShopPage from '../pages/ShopPage';
 import '../styles/global.css';
+
+const WelcomePage = lazy(() => import('../pages/WelcomePage'));
+const LobbyPage = lazy(() => import('../pages/LobbyPage'));
+const ElevatorPage = lazy(() => import('../pages/ElevatorPage'));
+const FloorPage = lazy(() => import('../pages/FloorPage'));
+const AchievementsPage = lazy(() => import('../pages/AchievementsPage'));
+const AndyRoomPage = lazy(() => import('../pages/AndyRoomPage'));
+const FloorMapPage = lazy(() => import('../pages/FloorMapPage'));
+const AndyPage = lazy(() => import('../pages/AndyPage'));
+const ShopPage = lazy(() => import('../pages/ShopPage'));
+
+function PageLoader() {
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '100dvh',
+      background: 'linear-gradient(180deg, #1a1a3e 0%, #2d2d6e 100%)',
+    }}>
+      <div style={{
+        width: 40,
+        height: 40,
+        border: '3px solid rgba(255,217,61,0.3)',
+        borderTopColor: '#ffd93d',
+        borderRadius: '50%',
+        animation: 'spin 0.8s linear infinite',
+      }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+}
 
 export default function App() {
   const playerName = useGameStore((s) => s.playerName);
@@ -18,26 +42,28 @@ export default function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              playerName ? <Navigate to="/lobby" replace /> : <WelcomePage />
-            }
-          />
-          <Route
-            path="/lobby"
-            element={playerName ? <LobbyPage /> : <Navigate to="/" replace />}
-          />
-          <Route path="/elevator" element={<ElevatorPage />} />
-          <Route path="/floor/:floorId" element={<FloorPage />} />
-          <Route path="/achievements" element={<AchievementsPage />} />
-          <Route path="/room" element={<AndyRoomPage />} />
-          <Route path="/map" element={<FloorMapPage />} />
-          <Route path="/andy" element={<AndyPage />} />
-          <Route path="/shop" element={<ShopPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                playerName ? <Navigate to="/lobby" replace /> : <WelcomePage />
+              }
+            />
+            <Route
+              path="/lobby"
+              element={playerName ? <LobbyPage /> : <Navigate to="/" replace />}
+            />
+            <Route path="/elevator" element={<ElevatorPage />} />
+            <Route path="/floor/:floorId" element={<FloorPage />} />
+            <Route path="/achievements" element={<AchievementsPage />} />
+            <Route path="/room" element={<AndyRoomPage />} />
+            <Route path="/map" element={<FloorMapPage />} />
+            <Route path="/andy" element={<AndyPage />} />
+            <Route path="/shop" element={<ShopPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </ErrorBoundary>
   );

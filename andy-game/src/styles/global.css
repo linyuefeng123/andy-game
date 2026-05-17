@@ -1,7 +1,8 @@
 @import './theme.css';
 @import './animations.css';
 
-@import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Nunito:wght@400;600;700;800&display=swap');
+/* Fonts loaded via <link> in index.html for non-blocking loading */
+
 
 *,
 *::before,
