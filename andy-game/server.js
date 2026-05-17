@@ -1,8 +1,7 @@
 import { createServer } from 'http';
 import { readFileSync, existsSync, statSync } from 'fs';
 import { join, extname } from 'path';
-import { createGzip, createBrotliCompress } from 'zlib';
-import { pipeline } from 'stream';
+import { gzipSync, brotliCompressSync } from 'zlib';
 
 const PORT = process.env.PORT || 3000;
 const DIST = join(process.cwd(), 'dist');
@@ -25,6 +24,23 @@ const MIME = {
 const IMMUTABLE_EXTS = ['.js', '.mjs', '.css', '.woff2', '.woff', '.png', '.webp', '.svg'];
 const HAS_HASH_RE = /-[a-zA-Z0-9]{8,}\./;
 
+const compressCache = new Map();
+
+function compress(data, encoding) {
+  const key = `${data.length}:${encoding}`;
+  if (compressCache.has(key)) return compressCache.get(key);
+  let result;
+  if (encoding === 'br') {
+    result = brotliCompressSync(data);
+  } else {
+    result = gzipSync(data);
+  }
+  if (data.length < 500000) {
+    compressCache.set(key, result);
+  }
+  return result;
+}
+
 const server = createServer((req, res) => {
   let path = join(DIST, req.url === '/' ? 'index.html' : req.url);
 
@@ -37,39 +53,39 @@ const server = createServer((req, res) => {
   const isHTML = ext === '.html';
 
   try {
-    const stat = statSync(path);
     const data = readFileSync(path);
-
-    res.writeHead(200, {
-      'Content-Type': contentType,
-      ...getCacheHeaders(path, isHTML),
-      'Vary': 'Accept-Encoding',
-    });
-
+    const cacheHeaders = getCacheHeaders(path, isHTML);
     const acceptEncoding = req.headers['accept-encoding'] || '';
 
-    if (!isHTML && acceptEncoding.includes('br')) {
+    if (!isHTML && data.length > 200 && acceptEncoding.includes('br')) {
+      const compressed = compress(data, 'br');
       res.writeHead(200, {
         'Content-Type': contentType,
-        ...getCacheHeaders(path, isHTML),
+        ...cacheHeaders,
         'Vary': 'Accept-Encoding',
         'Content-Encoding': 'br',
       });
-      pipeline(data, createBrotliCompress({ level: 4 }), res, () => {});
+      res.end(compressed);
       return;
     }
 
-    if (!isHTML && acceptEncoding.includes('gzip')) {
+    if (!isHTML && data.length > 200 && acceptEncoding.includes('gzip')) {
+      const compressed = compress(data, 'gzip');
       res.writeHead(200, {
         'Content-Type': contentType,
-        ...getCacheHeaders(path, isHTML),
+        ...cacheHeaders,
         'Vary': 'Accept-Encoding',
         'Content-Encoding': 'gzip',
       });
-      pipeline(data, createGzip({ level: 6 }), res, () => {});
+      res.end(compressed);
       return;
     }
 
+    res.writeHead(200, {
+      'Content-Type': contentType,
+      ...cacheHeaders,
+      'Vary': 'Accept-Encoding',
+    });
     res.end(data);
   } catch {
     res.writeHead(404);
