@@ -1,4 +1,4 @@
 {
-  "builds": [{ "src": "package.json", "use": "@zeabur/static-spa" }],
-  "routes": [{ "src": "/(.*)", "dest": "/index.html" }]
+  "builds": [{ "src": "package.json", "use": "@zeabur/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "/" }]
 }
