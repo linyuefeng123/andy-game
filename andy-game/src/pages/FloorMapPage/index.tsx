@@ -4,7 +4,7 @@ import { useGameStore } from '../../store/useGameStore';
 import { getFloorMeta, IMPLEMENTED_FLOORS } from '../../floors/_registry';
 import styles from './index.module.css';
 
-const ALL_FLOORS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const ALL_FLOORS = IMPLEMENTED_FLOORS;
 
 export default function FloorMapPage() {
   const navigate = useNavigate();
