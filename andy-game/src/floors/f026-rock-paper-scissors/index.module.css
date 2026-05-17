@@ -1,0 +1,268 @@
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.scoreBoard {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: center;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.scoreItem {
+  color: var(--color-primary);
+}
+
+.scoreWins {
+  color: var(--color-mint);
+}
+
+.scoreLosses {
+  color: var(--color-coral);
+}
+
+.battleArea {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  background: var(--color-board);
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-card);
+  width: 100%;
+  justify-content: center;
+}
+
+.battleSide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.battleLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.battleEmoji {
+  font-size: 64px;
+  display: block;
+  min-width: 80px;
+  text-align: center;
+}
+
+.vsText {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-coral);
+  text-shadow: 0 0 10px rgba(255, 107, 107, 0.4);
+}
+
+.roundResult {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+}
+
+.resultWin {
+  color: var(--color-mint);
+  background: rgba(107, 203, 119, 0.2);
+}
+
+.resultLose {
+  color: var(--color-coral);
+  background: rgba(255, 107, 107, 0.2);
+}
+
+.resultDraw {
+  color: var(--color-primary);
+  background: rgba(255, 217, 61, 0.2);
+}
+
+.choiceButtons {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+}
+
+.choiceButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: var(--color-board);
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-text);
+  cursor: pointer;
+  min-height: var(--touch-target);
+  min-width: 90px;
+  transition: all var(--transition-fast);
+}
+
+.choiceButton:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background: rgba(255, 217, 61, 0.1);
+  transform: translateY(-2px);
+}
+
+.choiceButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.choiceButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.choiceHint {
+  border-color: var(--color-sky) !important;
+  box-shadow: 0 0 15px rgba(77, 150, 255, 0.5);
+  animation: pulse-hint 0.8s ease-in-out infinite;
+}
+
+.choiceEmoji {
+  font-size: 42px;
+}
+
+.choiceLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+}
+
+.helpHintText {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-sky);
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
+}
+
+.skipLink:hover {
+  color: var(--color-text);
+}
+
+/* Game over result card */
+.resultCard {
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-2xl);
+  text-align: center;
+  box-shadow: var(--shadow-glow);
+}
+
+.resultEmoji {
+  font-size: 80px;
+  margin-bottom: var(--space-md);
+}
+
+.resultTitle {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.resultInfo {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.starRow {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+}
+
+.starActive {
+  font-size: 36px;
+}
+
+.starInactive {
+  font-size: 36px;
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.winButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}
+
+@keyframes pulse-hint {
+  0%, 100% { box-shadow: 0 0 8px rgba(77, 150, 255, 0.4); }
+  50% { box-shadow: 0 0 18px rgba(77, 150, 255, 0.7); }
+}

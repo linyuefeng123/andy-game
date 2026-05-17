@@ -1,0 +1,206 @@
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.gameInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.roundInfo {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.phaseInfo {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.colorGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  width: clamp(240px, 70vw, 320px);
+  height: clamp(240px, 70vw, 320px);
+}
+
+.colorButton {
+  border-radius: var(--border-radius);
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+  min-height: 0;
+}
+
+.colorButton:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.colorButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.colorButton:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+
+.colorActive {
+  border-color: white !important;
+  box-shadow: 0 0 25px currentColor, inset 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.colorHint {
+  border-color: var(--color-sky) !important;
+  box-shadow: 0 0 20px rgba(77, 150, 255, 0.6);
+  animation: pulse-hint 0.8s ease-in-out infinite;
+}
+
+.startButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  border: none;
+  cursor: pointer;
+}
+
+.helpHintText {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-sky);
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
+}
+
+.skipLink:hover {
+  color: var(--color-text);
+}
+
+/* Game over result card */
+.resultCard {
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-2xl);
+  text-align: center;
+  box-shadow: var(--shadow-glow);
+}
+
+.resultEmoji {
+  font-size: 80px;
+  margin-bottom: var(--space-md);
+}
+
+.resultTitle {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.resultInfo {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.starRow {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+}
+
+.starActive {
+  font-size: 36px;
+}
+
+.starInactive {
+  font-size: 36px;
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.winButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}
+
+@keyframes pulse-hint {
+  0%, 100% { box-shadow: 0 0 8px rgba(77, 150, 255, 0.4); }
+  50% { box-shadow: 0 0 18px rgba(77, 150, 255, 0.7); }
+}

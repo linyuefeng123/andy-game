@@ -1,0 +1,288 @@
+.container {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.gameInfo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 var(--space-sm);
+}
+
+.infoText {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.mistakeText {
+  font-size: var(--font-size-md);
+  color: var(--color-coral);
+  font-weight: 700;
+}
+
+.instruction {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Board */
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  width: 100%;
+  max-width: 300px;
+  background: var(--color-board-line);
+  border: 3px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+}
+
+.cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  background: var(--color-board);
+  color: var(--color-text);
+  border: none;
+  cursor: pointer;
+  min-height: var(--touch-target);
+  transition: background var(--transition-fast);
+  position: relative;
+}
+
+.cell:active:not(:disabled) {
+  background: rgba(255, 217, 61, 0.15);
+}
+
+.cellGiven {
+  color: var(--color-primary);
+  background: rgba(255, 217, 61, 0.08);
+  cursor: default;
+  font-weight: 800;
+}
+
+.cellSelected {
+  background: rgba(255, 217, 61, 0.25);
+  box-shadow: inset 0 0 0 2px var(--color-primary);
+}
+
+.cellHighlighted {
+  background: rgba(77, 150, 255, 0.1);
+}
+
+.cellWrong {
+  color: var(--color-coral);
+  background: rgba(255, 107, 107, 0.15);
+}
+
+.cellHelp {
+  background: rgba(107, 203, 119, 0.3);
+  box-shadow: inset 0 0 0 2px var(--color-mint);
+  animation: help-glow 0.6s ease-in-out infinite;
+}
+
+@keyframes help-glow {
+  0%, 100% { box-shadow: inset 0 0 0 2px var(--color-mint); }
+  50% { box-shadow: inset 0 0 0 3px var(--color-mint), 0 0 12px rgba(107, 203, 119, 0.4); }
+}
+
+.boxBorderRight {
+  border-right: 2px solid var(--color-primary);
+}
+
+.boxBorderBottom {
+  border-bottom: 2px solid var(--color-primary);
+}
+
+/* Number pad */
+.numberPad {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+}
+
+.numButton {
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border-radius: var(--border-radius);
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.numButton:hover:not(:disabled) {
+  background: rgba(255, 217, 61, 0.2);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.numButton:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.eraseButton {
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border-radius: var(--border-radius);
+  background: rgba(255, 107, 107, 0.15);
+  border: 2px solid rgba(255, 107, 107, 0.3);
+  color: var(--color-coral);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.eraseButton:hover:not(:disabled) {
+  background: rgba(255, 107, 107, 0.25);
+}
+
+.eraseButton:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* Action buttons */
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
+}
+
+.skipLink:hover {
+  color: var(--color-text);
+}
+
+/* Win overlay */
+.winOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winContent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  padding: var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.winEmoji {
+  font-size: 80px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.winText {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.winSub {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.starRow {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+}
+
+.starActive {
+  font-size: 36px;
+}
+
+.starInactive {
+  font-size: 36px;
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.winButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}
