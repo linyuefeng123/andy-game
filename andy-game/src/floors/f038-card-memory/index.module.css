@@ -1,0 +1,315 @@
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.gameInfo {
+  text-align: center;
+}
+
+.roundInfo {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.phaseBanner {
+  text-align: center;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-primary);
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(255, 217, 61, 0.1);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 217, 61, 0.3);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.recallBanner {
+  background: rgba(77, 150, 255, 0.1);
+  border-color: rgba(77, 150, 255, 0.3);
+  color: var(--color-sky);
+}
+
+.countdown {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-text-dark);
+  font-weight: 800;
+  font-size: var(--font-size-md);
+}
+
+/* Card row */
+.cardRow {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: var(--space-sm) 0;
+}
+
+.card {
+  width: 56px;
+  height: 72px;
+  perspective: 600px;
+  cursor: default;
+}
+
+.cardInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s;
+  transform-style: preserve-3d;
+}
+
+.card .cardFront,
+.card .cardBack {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+}
+
+.cardFront {
+  background: rgba(255, 217, 61, 0.15);
+  border: 2px solid rgba(255, 217, 61, 0.4);
+}
+
+.cardBack {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transform: rotateY(180deg);
+}
+
+.cardEmoji {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.cardBackText {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.cardSelected {
+  opacity: 0.7;
+}
+
+.cardSelected .cardBack {
+  background: rgba(107, 203, 119, 0.2);
+  border-color: var(--color-mint);
+}
+
+.cardNext .cardBack {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 8px rgba(255, 217, 61, 0.3);
+}
+
+/* Feedback */
+.feedbackCorrect {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: #50c850;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(80, 200, 80, 0.15);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(80, 200, 80, 0.4);
+}
+
+.feedbackWrong {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: #ff5050;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(255, 80, 80, 0.15);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 80, 80, 0.4);
+}
+
+/* Scrambled selection area */
+.selectArea {
+  width: 100%;
+  background: var(--color-board);
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-card);
+}
+
+.selectRow {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.selectCard {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--border-radius);
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  font-size: 26px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: var(--touch-target);
+  padding: 0;
+}
+
+.selectCard:not(:disabled):hover {
+  background: rgba(255, 217, 61, 0.2);
+  border-color: var(--color-primary);
+}
+
+.selectCard:disabled {
+  cursor: default;
+}
+
+.selectUsed {
+  opacity: 0.3;
+  background: rgba(107, 203, 119, 0.1);
+  border-color: rgba(107, 203, 119, 0.3);
+}
+
+.selectHint {
+  background: rgba(255, 217, 61, 0.3);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 12px rgba(255, 217, 61, 0.5);
+  animation: hint-pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 217, 61, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(255, 217, 61, 0.7); }
+}
+
+/* Action buttons */
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
+}
+
+.skipLink:hover {
+  color: var(--color-text);
+}
+
+/* Win overlay */
+.winOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winContent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  padding: var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.winEmoji {
+  font-size: 80px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.winText {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.scoreInfo {
+  font-size: var(--font-size-md);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.winButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}

@@ -82,6 +82,18 @@
   cursor: pointer;
 }
 
+.musicButton {
+  font-size: 20px;
+  background: rgba(155, 114, 207, 0.15);
+  border: 2px solid var(--color-lavender);
+  color: var(--color-lavender);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--border-radius-sm);
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  cursor: pointer;
+}
+
 .houseArea {
   text-align: center;
 }
@@ -96,6 +108,22 @@
   font-size: var(--font-size-lg);
   color: var(--color-text-muted);
   margin-top: var(--space-sm);
+}
+
+.elevatorShaft {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  transform-origin: top center;
+  margin: -8px 0;
+}
+
+.elevatorDing {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
 }
 
 .elevatorButton {

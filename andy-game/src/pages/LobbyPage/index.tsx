@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGameStore, AP_THRESHOLDS } from '../../store/useGameStore';
 import { useElevator } from '../../hooks/useElevator';
-import { playSound } from '../../utils/audio';
+import { playSound, createBGMPlayer, type BGMPlayer } from '../../utils/audio';
 import AndyAvatar from '../../components/AndyAvatar';
 import styles from './index.module.css';
 
@@ -16,6 +16,44 @@ function getTodayISO(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
+function LobbyMusic() {
+  const musicEnabled = useGameStore((s) => s.musicEnabled);
+  const playerRef = useRef<BGMPlayer | null>(null);
+
+  useEffect(() => {
+    if (!playerRef.current) {
+      playerRef.current = createBGMPlayer();
+    }
+    if (musicEnabled) {
+      playerRef.current.start();
+    } else {
+      playerRef.current.stop();
+    }
+    return () => { playerRef.current?.stop(); };
+  }, [musicEnabled]);
+
+  // Handle browser autoplay policy: resume AudioContext on first user interaction
+  useEffect(() => {
+    if (!musicEnabled) return;
+    const handleClick = () => {
+      if (musicEnabled && playerRef.current) {
+        playerRef.current.start();
+      }
+    };
+    document.addEventListener('click', handleClick, { once: true });
+    return () => document.removeEventListener('click', handleClick);
+  }, [musicEnabled]);
+
+  useEffect(() => {
+    return () => {
+      playerRef.current?.destroy();
+      playerRef.current = null;
+    };
+  }, []);
+
+  return null;
+}
+
 export default function LobbyPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,6 +61,8 @@ export default function LobbyPage() {
   const adventurePoints = useGameStore((s) => s.adventurePoints);
   const lastPlayDate = useGameStore((s) => s.lastPlayDate);
   const { elevatorTickets, pressElevator, canUseElevator } = useElevator();
+  const musicEnabled = useGameStore((s) => s.musicEnabled);
+  const toggleMusic = useGameStore((s) => s.toggleMusic);
 
   const [showDailyReward, setShowDailyReward] = useState(false);
   const [showLevelUpCeremony, setShowLevelUpCeremony] = useState(false);
@@ -108,7 +148,10 @@ export default function LobbyPage() {
             </span>
           </div>
           <div className={styles.headerRight}>
-            <button className={styles.levelBadge} onClick={() => window.open('https://andygame.zeabur.app/andy', '_blank')}>
+            <button className={styles.musicButton} onClick={() => { toggleMusic(); playSound('click'); }}>
+              {musicEnabled ? '🔊' : '🔇'}
+            </button>
+            <button className={styles.levelBadge} onClick={() => navigate('/andy')}>
               ⚔️ Lv.{Math.floor(adventurePoints / 30) + 1}
             </button>
             <button className={styles.shopIconButton} onClick={() => navigate('/shop')}>
@@ -128,6 +171,34 @@ export default function LobbyPage() {
           <p className={styles.houseLabel}>
             {language === 'zh' ? '云端100层房子' : 'The Cloud House'}
           </p>
+        </motion.div>
+
+        {/* Elevator shaft connecting house to button */}
+        <motion.div
+          className={styles.elevatorShaft}
+          initial={{ opacity: 0, scaleY: 0 }}
+          animate={{ opacity: 1, scaleY: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <svg width="36" height="56" viewBox="0 0 36 56" fill="none">
+            <line x1="6" y1="0" x2="6" y2="56" stroke="#ffd93d" strokeWidth="2" opacity="0.4" />
+            <line x1="30" y1="0" x2="30" y2="56" stroke="#ffd93d" strokeWidth="2" opacity="0.4" />
+            <line x1="18" y1="0" x2="18" y2="18" stroke="#ffd93d" strokeWidth="1" opacity="0.25" />
+            <rect x="8" y="16" width="20" height="14" rx="3" fill="#ffd93d" opacity="0.75">
+              <animate attributeName="y" values="16;34;16" dur="3s" repeatCount="indefinite" />
+            </rect>
+            <line x1="18" y1="18" x2="18" y2="28" stroke="#2d2d44" strokeWidth="1" opacity="0.4">
+              <animate attributeName="y1" values="18;36;18" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="y2" values="28;46;28" dur="3s" repeatCount="indefinite" />
+            </line>
+          </svg>
+          <motion.div
+            className={styles.elevatorDing}
+            animate={{ opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            🔔
+          </motion.div>
         </motion.div>
 
         {/* Elevator button */}
@@ -168,6 +239,7 @@ export default function LobbyPage() {
       <Suspense>{showLevelUpCeremony && <LevelUpCeremony onComplete={handleLevelUpComplete} />}</Suspense>
       <Suspense>{showCompletionCeremony && <CompletionCeremony onComplete={handleCompletionComplete} />}</Suspense>
       <Suspense>{showMysteryBox && <MysteryBox onClose={handleMysteryBoxClose} />}</Suspense>
+      <LobbyMusic />
     </div>
   );
 }

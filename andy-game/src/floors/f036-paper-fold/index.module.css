@@ -1,0 +1,308 @@
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.gameInfo {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.turnInfo {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.foldSteps {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.foldStep {
+  font-size: var(--font-size-sm);
+  color: var(--color-sky);
+  background: rgba(77, 150, 255, 0.15);
+  padding: 2px 8px;
+  border-radius: var(--border-radius);
+}
+
+.foldedSection {
+  text-align: center;
+  background: var(--color-board);
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-card);
+  width: 100%;
+}
+
+.sectionLabel {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+}
+
+.foldedPaper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.foldIndicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.foldArrow {
+  font-size: 20px;
+  color: var(--color-text-muted);
+}
+
+.paperGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.paperRow {
+  display: flex;
+  gap: 2px;
+}
+
+.paperCell {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.holeCell {
+  background: rgba(30, 30, 30, 0.8);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 4px rgba(255, 217, 61, 0.3);
+}
+
+.foldLine {
+  border-color: var(--color-sky);
+  border-width: 2px;
+}
+
+.foldedAway {
+  background: rgba(255, 255, 255, 0.03);
+  opacity: 0.3;
+}
+
+.optionsSection {
+  text-align: center;
+  width: 100%;
+}
+
+.optionsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+.optionCard {
+  background: var(--color-board);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--border-radius);
+  padding: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: var(--touch-target);
+  position: relative;
+}
+
+.optionCard:not(:disabled):hover {
+  border-color: var(--color-primary);
+  background: rgba(255, 217, 61, 0.05);
+}
+
+.optionCard:disabled {
+  cursor: default;
+}
+
+.optionCorrect {
+  border-color: #4caf50;
+  background: rgba(76, 175, 80, 0.15);
+  box-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
+}
+
+.optionWrong {
+  border-color: #ff5050;
+  background: rgba(255, 80, 80, 0.15);
+}
+
+.optionEliminated {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.optionLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.optionGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.optionRow {
+  display: flex;
+  gap: 2px;
+}
+
+.optionCell {
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.optionHole {
+  background: rgba(255, 217, 61, 0.6);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 3px rgba(255, 217, 61, 0.3);
+}
+
+.resultBadge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  font-size: 20px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
+}
+
+.skipLink:hover {
+  color: var(--color-text);
+}
+
+/* Win overlay */
+.winOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winContent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  padding: var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.winEmoji {
+  font-size: 80px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.winText {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.scoreInfo {
+  font-size: var(--font-size-md);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.winButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}

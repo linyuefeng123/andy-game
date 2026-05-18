@@ -139,3 +139,15 @@
   min-height: var(--touch-target);
   box-shadow: var(--shadow-glow);
 }
+
+.storyButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.gameWrapper {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
