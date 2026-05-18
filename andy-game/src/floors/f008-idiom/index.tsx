@@ -5,7 +5,7 @@ import { useGameStore } from '../../store/useGameStore';
 
 const IDIOMS = [
   { idiom: '一心一意', blank: 2, options: ['二', '一', '三', '万'], emoji: '1️⃣❤️1️⃣💭' },
-  { idiom: '三心二意', blank: 1, options: ['二', '三', '四', '五'], emoji: '3️⃣❤️2️⃣💭' },
+  { idiom: '三心二意', blank: 1, options: ['心', '口', '手', '眼'], emoji: '3️⃣❤️2️⃣💭' },
   { idiom: '五彩缤纷', blank: 0, options: ['四', '五', '六', '七'], emoji: '5️⃣🌈✨' },
   { idiom: '画龙点睛', blank: 3, options: ['脚', '头', '手', '睛'], emoji: '🐉✍️👁️' },
   { idiom: '守株待兔', blank: 0, options: ['守', '看', '望', '等'], emoji: '🌳🐰' },
@@ -28,9 +28,9 @@ const IDIOMS = [
   { idiom: '班门弄斧', blank: 2, options: ['舞', '挥', '弄', '玩'], emoji: '🪓🏠' },
   { idiom: '杯弓蛇影', blank: 0, options: ['杯', '碗', '壶', '盆'], emoji: '🍷🐍' },
   { idiom: '曹冲称象', blank: 2, options: ['看', '量', '称', '算'], emoji: '👦🐘' },
-  { idiom: '铁杵成针', blank: 1, options: ['木', '铁', '钢', '铜'], emoji: '🔧🪡' },
+  { idiom: '铁杵成针', blank: 0, options: ['铁', '铜', '钢', '金'], emoji: '🔧🪡' },
   { idiom: '指鹿为马', blank: 1, options: ['牛', '鹿', '羊', '猪'], emoji: '👆🦌' },
-  { idiom: '胸有成竹', blank: 2, options: ['松', '梅', '竹', '菊'], emoji: '🫁🎋' },
+  { idiom: '胸有成竹', blank: 3, options: ['松', '梅', '竹', '菊'], emoji: '🫁🎋' },
   { idiom: '鹤立鸡群', blank: 0, options: ['鹤', '鹰', '雁', '鹭'], emoji: '🦢🐔' },
   { idiom: '虎头蛇尾', blank: 0, options: ['虎', '龙', '狮', '豹'], emoji: '🐯🐍' },
   { idiom: '九牛一毛', blank: 1, options: ['羊', '牛', '马', '猪'], emoji: '9️⃣🐂1️⃣🧶' },

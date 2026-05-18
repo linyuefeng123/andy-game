@@ -224,4 +224,11 @@ export const floorMeta: Record<number, FloorMeta> = {
     storyEn: 'Mines hide underground—use number clues to find safe spots!',
     bgColor: '#0f1a2a',
   },
+  30: {
+    nameZh: '成语消消乐', nameEn: 'Idiom Match', category: 'education',
+    reward: { emoji: '🎭', nameZh: '成语达人', nameEn: 'Idiom Master', descriptionZh: '成语全都找到了！', descriptionEn: 'All idioms found!' },
+    storyZh: '散落的文字碎片藏着成语秘密，找出正确的四个字拼成成语吧！',
+    storyEn: 'Scattered characters hide idiom secrets—find the right four to form idioms!',
+    bgColor: '#2a1a3a',
+  },
 };

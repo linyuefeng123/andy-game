@@ -60,6 +60,7 @@ const floorModules: Record<number, () => Promise<{ default: ComponentType<FloorP
   27: () => import('./f027-simon-says'),
   28: () => import('./f028-2048'),
   29: () => import('./f029-minesweeper'),
+  30: () => import('./f030-idiom-match'),
 };
 
 export const IMPLEMENTED_FLOORS = Object.keys(floorModules).map(Number);
