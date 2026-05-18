@@ -114,7 +114,7 @@ export const useGameStore = create<GameState>()(
       visitedFloors: [],
       completedFloors: {},
       totalStars: 0,
-      unlockedFloors: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+      unlockedFloors: Array.from({ length: 60 }, (_, i) => i + 1),
       collectedRewards: [],
       audioEnabled: true,
       musicEnabled: false,
@@ -340,6 +340,21 @@ export const useGameStore = create<GameState>()(
     }),
     {
       name: 'andy-100floors',
+      version: 2,
+      migrate: (persisted: Record<string, unknown>, version: number) => {
+        if (version < 2) {
+          // Ensure unlockedFloors includes floors 1-60 (old data only had 1-29)
+          const floors = persisted.unlockedFloors as number[] | undefined;
+          if (floors) {
+            const maxFloor = Math.max(...floors);
+            const missing = Array.from({ length: 60 - maxFloor }, (_, i) => maxFloor + i + 1);
+            persisted.unlockedFloors = [...floors, ...missing];
+          } else {
+            persisted.unlockedFloors = Array.from({ length: 60 }, (_, i) => i + 1);
+          }
+        }
+        return persisted as Partial<GameState> & Record<string, unknown>;
+      },
       partialize: (state) => ({
         playerName: state.playerName,
         language: state.language,
