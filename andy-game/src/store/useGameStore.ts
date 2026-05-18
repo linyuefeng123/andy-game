@@ -117,7 +117,7 @@ export const useGameStore = create<GameState>()(
       unlockedFloors: Array.from({ length: 60 }, (_, i) => i + 1),
       collectedRewards: [],
       audioEnabled: true,
-      musicEnabled: false,
+      musicEnabled: true,
       adventurePoints: 0,
 
       // Daily login

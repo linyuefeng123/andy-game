@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useGameStore, AP_THRESHOLDS } from '../../store/useGameStore';
 import { useElevator } from '../../hooks/useElevator';
 import { playSound, createBGMPlayer, type BGMPlayer } from '../../utils/audio';
-import AndyAvatar from '../../components/AndyAvatar';
 import styles from './index.module.css';
 
 const DailyRewardModal = lazy(() => import('../../components/DailyRewardModal'));
@@ -17,32 +16,26 @@ function getTodayISO(): string {
 }
 
 function LobbyMusic() {
-  const musicEnabled = useGameStore((s) => s.musicEnabled);
   const playerRef = useRef<BGMPlayer | null>(null);
 
   useEffect(() => {
     if (!playerRef.current) {
       playerRef.current = createBGMPlayer();
     }
-    if (musicEnabled) {
-      playerRef.current.start();
-    } else {
-      playerRef.current.stop();
-    }
+    playerRef.current.start();
     return () => { playerRef.current?.stop(); };
-  }, [musicEnabled]);
+  }, []);
 
   // Handle browser autoplay policy: resume AudioContext on first user interaction
   useEffect(() => {
-    if (!musicEnabled) return;
     const handleClick = () => {
-      if (musicEnabled && playerRef.current) {
+      if (playerRef.current) {
         playerRef.current.start();
       }
     };
     document.addEventListener('click', handleClick, { once: true });
     return () => document.removeEventListener('click', handleClick);
-  }, [musicEnabled]);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -54,6 +47,9 @@ function LobbyMusic() {
   return null;
 }
 
+const TAGLINE_ZH = '睡前按电梯前往云端100层的房子开启冒险吧';
+const TAGLINE_EN = 'Take the elevator to the cloud house for a bedtime adventure!';
+
 export default function LobbyPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -61,8 +57,6 @@ export default function LobbyPage() {
   const adventurePoints = useGameStore((s) => s.adventurePoints);
   const lastPlayDate = useGameStore((s) => s.lastPlayDate);
   const { elevatorTickets, pressElevator, canUseElevator } = useElevator();
-  const musicEnabled = useGameStore((s) => s.musicEnabled);
-  const toggleMusic = useGameStore((s) => s.toggleMusic);
 
   const [showDailyReward, setShowDailyReward] = useState(false);
   const [showLevelUpCeremony, setShowLevelUpCeremony] = useState(false);
@@ -78,7 +72,7 @@ export default function LobbyPage() {
     }
   }, [lastPlayDate]);
 
-  // Level up ceremony check - when adventurePoints crosses a threshold
+  // Level up ceremony check
   const shownAPThresholds = useGameStore((s) => s.shownAPThresholds);
 
   useEffect(() => {
@@ -97,7 +91,6 @@ export default function LobbyPage() {
     if (locationState?.fromFloor && !mysteryBoxChecked) {
       setMysteryBoxChecked(true);
       if (Math.random() < 0.1) {
-        // Small delay so the page renders first
         const timer = setTimeout(() => setShowMysteryBox(true), 500);
         return () => clearTimeout(timer);
       }
@@ -129,6 +122,8 @@ export default function LobbyPage() {
     setShowMysteryBox(false);
   }, []);
 
+  const tagline = language === 'zh' ? TAGLINE_ZH : TAGLINE_EN;
+
   return (
     <div className={styles.container}>
       {/* Clouds background */}
@@ -139,28 +134,17 @@ export default function LobbyPage() {
       </div>
 
       <div className={styles.content}>
-        {/* Header */}
+        {/* Header: level left, shop right */}
         <div className={styles.header}>
-          <div className={styles.playerInfo}>
-            <AndyAvatar pose="idle" size={40} />
-            <span className={styles.playerName}>
-              {language === 'zh' ? 'Andy100层房子大冒险' : 'Andy 100-Floor Adventure'}
-            </span>
-          </div>
-          <div className={styles.headerRight}>
-            <button className={styles.musicButton} onClick={() => { toggleMusic(); playSound('click'); }}>
-              {musicEnabled ? '🔊' : '🔇'}
-            </button>
-            <button className={styles.levelBadge} onClick={() => navigate('/andy')}>
-              ⚔️ Lv.{Math.floor(adventurePoints / 30) + 1}
-            </button>
-            <button className={styles.shopIconButton} onClick={() => navigate('/shop')}>
-              🛒
-            </button>
-          </div>
+          <button className={styles.levelBadge} onClick={() => navigate('/andy')}>
+            ⚔️ Lv.{Math.floor(adventurePoints / 30) + 1}
+          </button>
+          <button className={styles.shopIconButton} onClick={() => navigate('/shop')}>
+            🛒
+          </button>
         </div>
 
-        {/* House visualization */}
+        {/* House + title area */}
         <motion.div
           className={styles.houseArea}
           initial={{ scale: 0.8, opacity: 0 }}
@@ -168,9 +152,12 @@ export default function LobbyPage() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <div className={styles.houseEmoji}>🏰</div>
-          <p className={styles.houseLabel}>
-            {language === 'zh' ? '云端100层房子' : 'The Cloud House'}
-          </p>
+          <h1 className={styles.gameTitle}>
+            {language === 'zh' ? 'Andy的100层房子冒险' : "Andy's 100-Floor Adventure"}
+          </h1>
+          <div className={styles.taglineWrap}>
+            <span className={styles.tagline}>{tagline}</span>
+          </div>
         </motion.div>
 
         {/* Elevator shaft connecting house to button */}
@@ -221,15 +208,23 @@ export default function LobbyPage() {
           </span>
         </motion.button>
 
-        {/* Bottom buttons */}
+        {/* Bottom buttons: 4 icons symmetrical */}
         <div className={styles.bottomButtons}>
-          <button className={styles.achieveButton} onClick={() => navigate('/achievements')}>
+          <button className={styles.iconButton} onClick={() => navigate('/andy')}>
+            <span>👦</span>
+            <span>{language === 'zh' ? 'Andy' : 'Andy'}</span>
+          </button>
+          <button className={styles.iconButton} onClick={() => navigate('/achievements')}>
             <span>🏆</span>
             <span>{language === 'zh' ? '成就' : 'Achieve'}</span>
           </button>
-          <button className={styles.mapButton} onClick={() => navigate('/map')}>
+          <button className={styles.iconButton} onClick={() => navigate('/map')}>
             <span>🏢</span>
             <span>{language === 'zh' ? '楼层' : 'Floors'}</span>
+          </button>
+          <button className={styles.iconButton} onClick={() => navigate('/shop')}>
+            <span>🛍️</span>
+            <span>{language === 'zh' ? '商店' : 'Shop'}</span>
           </button>
         </div>
       </div>
