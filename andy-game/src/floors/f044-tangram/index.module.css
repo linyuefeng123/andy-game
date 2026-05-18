@@ -1,0 +1,320 @@
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.gameInfo {
+  text-align: center;
+}
+
+.roundLabel {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.subLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-left: var(--space-sm);
+}
+
+.boardWrapper {
+  background: var(--color-board);
+  border-radius: var(--border-radius);
+  padding: var(--space-sm);
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+.targetLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-bottom: var(--space-xs);
+}
+
+.targetGrid {
+  display: grid;
+  gap: 2px;
+  margin: 0 auto var(--space-md);
+}
+
+.targetCell {
+  width: clamp(36px, 9vw, 48px);
+  height: clamp(36px, 9vw, 48px);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+}
+
+.targetFilled {
+  background: rgba(255, 217, 61, 0.25);
+  border: 1px dashed rgba(255, 217, 61, 0.5);
+}
+
+.targetEmpty {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.boardLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-bottom: var(--space-xs);
+}
+
+.boardGrid {
+  display: grid;
+  gap: 2px;
+  margin: 0 auto;
+}
+
+.boardCell {
+  width: clamp(36px, 9vw, 48px);
+  height: clamp(36px, 9vw, 48px);
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.boardCell:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.boardCellPlaced {
+  border-radius: 3px;
+  border: none;
+}
+
+.boardCellCorrect {
+  box-shadow: 0 0 8px rgba(100, 255, 100, 0.4);
+}
+
+.boardCellWrong {
+  box-shadow: 0 0 8px rgba(255, 80, 80, 0.4);
+}
+
+.paletteArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.paletteLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.palettePieces {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.palettePiece {
+  padding: var(--space-sm);
+  border-radius: var(--border-radius);
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  min-height: var(--touch-target);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.palettePiece:hover {
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.palettePieceSelected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 12px rgba(255, 217, 61, 0.4);
+  background: rgba(255, 217, 61, 0.15);
+}
+
+.palettePieceUsed {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.miniGrid {
+  display: grid;
+  gap: 1px;
+}
+
+.miniCell {
+  width: clamp(10px, 2.5vw, 14px);
+  height: clamp(10px, 2.5vw, 14px);
+  border-radius: 1px;
+}
+
+.miniCellFilled {
+  background: var(--color-primary);
+}
+
+.miniCellEmpty {
+  background: transparent;
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
+}
+
+.skipLink:hover {
+  color: var(--color-text);
+}
+
+.resetButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  min-height: var(--touch-target);
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.resetButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Win overlay */
+.winOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winContent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  padding: var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.winEmoji {
+  font-size: 80px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.winText {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.winInfo {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.starRow {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+}
+
+.starActive {
+  font-size: 36px;
+}
+
+.starInactive {
+  font-size: 36px;
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.winButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}

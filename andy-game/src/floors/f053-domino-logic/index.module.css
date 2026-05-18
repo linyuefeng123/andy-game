@@ -1,0 +1,336 @@
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.gameInfo {
+  text-align: center;
+}
+
+.roundInfo {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.phaseBanner {
+  text-align: center;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-primary);
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(255, 217, 61, 0.1);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 217, 61, 0.3);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.phaseBanner.correctBanner {
+  background: rgba(80, 200, 80, 0.15);
+  border-color: rgba(80, 200, 80, 0.4);
+  color: #50c850;
+}
+
+.phaseBanner.wrongBanner {
+  background: rgba(255, 80, 80, 0.15);
+  border-color: rgba(255, 80, 80, 0.4);
+  color: #ff5050;
+}
+
+.dominoRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: var(--space-md);
+  background: var(--color-board);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-card);
+  width: 100%;
+}
+
+.domino {
+  display: flex;
+  align-items: stretch;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+  transition: all var(--transition-fast);
+}
+
+.domino.highlight {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 12px rgba(255, 217, 61, 0.3);
+}
+
+.domino.hiddenDomino {
+  border: 2px dashed rgba(255, 217, 61, 0.6);
+  background: rgba(255, 217, 61, 0.08);
+}
+
+.dominoHalf {
+  width: 48px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-text);
+  position: relative;
+}
+
+.dominoHalf:first-child {
+  border-right: 1.5px solid rgba(255, 255, 255, 0.2);
+}
+
+.dominoHalf.question {
+  color: var(--color-primary);
+  font-size: 32px;
+}
+
+/* Dot layout for domino pips */
+.dotsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 36px;
+  height: 36px;
+  gap: 2px;
+}
+
+.dotCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+.arrow {
+  font-size: 20px;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.optionsLabel {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-top: var(--space-md);
+}
+
+.optionsRow {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.optionDomino {
+  display: flex;
+  align-items: stretch;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: var(--touch-target);
+}
+
+.optionDomino:hover:not(:disabled) {
+  background: rgba(255, 217, 61, 0.15);
+  border-color: var(--color-primary);
+  transform: scale(1.08);
+}
+
+.optionDomino:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.optionDomino:disabled {
+  cursor: default;
+}
+
+.optionDomino.correct {
+  background: rgba(80, 200, 80, 0.3);
+  border-color: #50c850;
+}
+
+.optionDomino.wrong {
+  background: rgba(255, 80, 80, 0.3);
+  border-color: #ff5050;
+}
+
+.optionDomino.revealCorrect {
+  background: rgba(80, 200, 80, 0.2);
+  border-color: rgba(80, 200, 80, 0.5);
+}
+
+.optionHalf {
+  width: 44px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.optionHalf:first-child {
+  border-right: 1.5px solid rgba(255, 255, 255, 0.2);
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
+}
+
+.skipLink:hover {
+  color: var(--color-text);
+}
+
+/* Win overlay */
+.winOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winContent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  padding: var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.winEmoji {
+  font-size: 80px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.winText {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.winSub {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.starRow {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+}
+
+.starActive {
+  font-size: 36px;
+}
+
+.starInactive {
+  font-size: 36px;
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.winButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}

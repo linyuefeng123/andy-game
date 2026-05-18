@@ -1,0 +1,335 @@
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.gameInfo {
+  text-align: center;
+}
+
+.moveCount {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.roundInfo {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-left: var(--space-sm);
+}
+
+.boardWrapper {
+  background: var(--color-board);
+  border-radius: var(--border-radius);
+  padding: var(--space-sm);
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+.board {
+  display: grid;
+  gap: 3px;
+}
+
+.pipeCell {
+  width: clamp(48px, 14vw, 64px);
+  height: clamp(48px, 14vw, 64px);
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: background var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pipeCell:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pipeCell:active {
+  transform: scale(0.95);
+}
+
+.pipeInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pipeSegment {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+}
+
+.pipeSegmentTop {
+  width: 8px;
+  height: 50%;
+  top: 0;
+  left: calc(50% - 4px);
+}
+
+.pipeSegmentRight {
+  width: 50%;
+  height: 8px;
+  top: calc(50% - 4px);
+  right: 0;
+}
+
+.pipeSegmentBottom {
+  width: 8px;
+  height: 50%;
+  bottom: 0;
+  left: calc(50% - 4px);
+}
+
+.pipeSegmentLeft {
+  width: 50%;
+  height: 8px;
+  top: calc(50% - 4px);
+  left: 0;
+}
+
+.pipeCenter {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: calc(50% - 6px);
+  left: calc(50% - 6px);
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+  z-index: 1;
+}
+
+/* Water flowing through connected pipes */
+.pipeSegmentWater {
+  position: absolute;
+  background: #4da6ff;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.pipeSegmentWaterActive {
+  opacity: 1;
+}
+
+.pipeSegmentWaterTop {
+  width: 6px;
+  height: 50%;
+  top: 0;
+  left: calc(50% - 3px);
+}
+
+.pipeSegmentWaterRight {
+  width: 50%;
+  height: 6px;
+  top: calc(50% - 3px);
+  right: 0;
+}
+
+.pipeSegmentWaterBottom {
+  width: 6px;
+  height: 50%;
+  bottom: 0;
+  left: calc(50% - 3px);
+}
+
+.pipeSegmentWaterLeft {
+  width: 50%;
+  height: 6px;
+  top: calc(50% - 3px);
+  left: 0;
+}
+
+.pipeCenterWater {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: calc(50% - 5px);
+  left: calc(50% - 5px);
+  background: #4da6ff;
+  border-radius: 2px;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.pipeCenterWaterActive {
+  opacity: 1;
+}
+
+/* Entry and exit markers */
+.entryMarker {
+  position: absolute;
+  left: -28px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  animation: bounce-left 1s ease-in-out infinite;
+}
+
+.exitMarker {
+  position: absolute;
+  right: -28px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  animation: bounce-right 1s ease-in-out infinite;
+}
+
+@keyframes bounce-left {
+  0%, 100% { transform: translateY(-50%) translateX(0); }
+  50% { transform: translateY(-50%) translateX(-4px); }
+}
+
+@keyframes bounce-right {
+  0%, 100% { transform: translateY(-50%) translateX(0); }
+  50% { transform: translateY(-50%) translateX(4px); }
+}
+
+.pipeHint {
+  box-shadow: 0 0 12px rgba(77, 150, 255, 0.6);
+  animation: pulse-hint-pipe 0.8s ease-in-out infinite;
+}
+
+@keyframes pulse-hint-pipe {
+  0%, 100% { box-shadow: 0 0 8px rgba(77, 150, 255, 0.4); }
+  50% { box-shadow: 0 0 18px rgba(77, 150, 255, 0.8); }
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
+}
+
+.skipLink:hover {
+  color: var(--color-text);
+}
+
+/* Win overlay */
+.winOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winContent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  padding: var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.winEmoji {
+  font-size: 80px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.winText {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.winInfo {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.starRow {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+}
+
+.starActive {
+  font-size: 36px;
+}
+
+.starInactive {
+  font-size: 36px;
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.winButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}

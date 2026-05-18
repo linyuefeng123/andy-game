@@ -1,0 +1,295 @@
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.gameInfo {
+  text-align: center;
+  display: flex;
+  gap: var(--space-lg);
+  align-items: center;
+  justify-content: center;
+}
+
+.moveCount {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.levelLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.boardWrapper {
+  background: var(--color-board);
+  border-radius: var(--border-radius);
+  padding: var(--space-sm);
+  box-shadow: var(--shadow-card);
+}
+
+.board {
+  display: grid;
+  gap: 2px;
+  width: clamp(240px, 70vw, 360px);
+  height: clamp(240px, 70vw, 360px);
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: clamp(16px, 4vw, 28px);
+  user-select: none;
+}
+
+.wall {
+  background: #4a3a2a;
+  border: 1px solid #5a4a3a;
+}
+
+.floor {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.target {
+  background: rgba(255, 217, 61, 0.12);
+  position: relative;
+}
+
+.target::after {
+  content: '🎯';
+  position: absolute;
+  font-size: clamp(10px, 2.5vw, 16px);
+  opacity: 0.5;
+}
+
+.player {
+  background: rgba(77, 150, 255, 0.15);
+  font-size: clamp(18px, 4.5vw, 30px);
+  z-index: 2;
+}
+
+.box {
+  background: rgba(107, 203, 119, 0.2);
+  font-size: clamp(16px, 4vw, 26px);
+  z-index: 1;
+}
+
+.boxOnTarget {
+  background: rgba(255, 217, 61, 0.2);
+  font-size: clamp(16px, 4vw, 26px);
+  z-index: 1;
+}
+
+.dpad {
+  display: grid;
+  grid-template-areas:
+    ". up ."
+    "left . right"
+    ". down .";
+  gap: 4px;
+  margin-top: var(--space-xs);
+}
+
+.dpadBtn {
+  width: clamp(48px, 12vw, 60px);
+  height: clamp(48px, 12vw, 60px);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: auto;
+  min-width: auto;
+}
+
+.dpadBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--color-primary);
+}
+
+.dpadBtn:active {
+  transform: scale(0.9);
+  background: rgba(255, 217, 61, 0.2);
+}
+
+.dpadUp { grid-area: up; }
+.dpadDown { grid-area: down; }
+.dpadLeft { grid-area: left; }
+.dpadRight { grid-area: right; }
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.undoButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--color-text-muted);
+  color: var(--color-text-muted);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.undoButton:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+.undoButton:disabled {
+  opacity: 0.4;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
+}
+
+.skipLink:hover {
+  color: var(--color-text);
+}
+
+.hintArrow {
+  position: absolute;
+  font-size: 24px;
+  color: var(--color-sky);
+  animation: bounce-arrow 0.6s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Win overlay */
+.winOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winContent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  padding: var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.winEmoji {
+  font-size: 80px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.winText {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.winInfo {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.starRow {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+}
+
+.starActive {
+  font-size: 36px;
+}
+
+.starInactive {
+  font-size: 36px;
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.winButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}
+
+@keyframes bounce-arrow {
+  from { transform: translateY(0); }
+  to { transform: translateY(-4px); }
+}

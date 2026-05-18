@@ -1,0 +1,303 @@
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* Progress dots */
+.progressRow {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.dotDone {
+  background: var(--color-mint);
+}
+
+.dotCurrent {
+  background: var(--color-primary);
+  box-shadow: 0 0 8px rgba(255, 217, 61, 0.5);
+}
+
+/* Score bar */
+.scoreBar {
+  text-align: center;
+}
+
+.scoreLabel {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-primary);
+  background: var(--color-board);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--border-radius-sm);
+}
+
+/* Reference chart */
+.refChart {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  justify-content: center;
+  background: var(--color-board);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  width: 100%;
+}
+
+.refItem {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.refLetter {
+  color: var(--color-sky);
+  font-weight: 700;
+}
+
+/* Morse display area */
+.morseCard {
+  background: linear-gradient(135deg, var(--color-board), var(--color-sky-top));
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-xl) var(--space-2xl);
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  width: 100%;
+}
+
+.morseLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.morseSymbols {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+}
+
+/* Dot symbol */
+.morseDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 8px rgba(255, 217, 61, 0.4);
+}
+
+/* Dash symbol */
+.morseDash {
+  width: 40px;
+  height: 14px;
+  border-radius: 7px;
+  background: var(--color-primary);
+  box-shadow: 0 0 8px rgba(255, 217, 61, 0.4);
+}
+
+/* Letter separator gap */
+.morseGap {
+  width: 12px;
+}
+
+/* Option buttons */
+.optionGrid {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  width: 100%;
+}
+
+.option {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--border-radius);
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.option:hover:not(:disabled) {
+  background: rgba(255, 217, 61, 0.15);
+  border-color: var(--color-primary);
+}
+
+.option:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.optionCorrect {
+  background: rgba(107, 203, 119, 0.3);
+  border-color: var(--color-mint);
+  color: var(--color-mint);
+}
+
+.optionWrong {
+  background: rgba(255, 107, 107, 0.3);
+  border-color: var(--color-coral);
+  color: var(--color-coral);
+}
+
+.optionEliminated {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-muted);
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Celebration */
+.celebration {
+  font-size: 48px;
+  text-align: center;
+}
+
+/* Action buttons */
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.helpButton {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  background: rgba(77, 150, 255, 0.2);
+  border: 2px solid var(--color-sky);
+  color: var(--color-sky);
+  min-height: var(--touch-target);
+  min-width: 80px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.helpButton:disabled {
+  opacity: 0.4;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.skipLink {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: underline;
+  min-height: auto;
+  min-width: auto;
+}
+
+.skipLink:hover {
+  color: var(--color-text);
+}
+
+/* Win overlay */
+.winOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winContent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-sky-top), var(--color-board));
+  padding: var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.winEmoji {
+  font-size: 80px;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.winText {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.winSub {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.starRow {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+}
+
+.starActive {
+  font-size: 36px;
+}
+
+.starInactive {
+  font-size: 36px;
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.winButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.replayButton {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #ffd93d, #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  box-shadow: var(--shadow-glow);
+}
+
+.winButton {
+  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, var(--color-primary), #ffb347);
+  color: var(--color-text-dark);
+  font-weight: 700;
+  min-height: var(--touch-target);
+}
