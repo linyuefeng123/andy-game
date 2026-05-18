@@ -13,7 +13,7 @@ export default function WelcomePage() {
 
   const selectAndy = () => {
     playSound('click');
-    setPlayerName('Andy 林浚之');
+    setPlayerName('Andy100层房子大冒险');
     resetElevatorTickets();
     navigate('/lobby');
   };
@@ -57,8 +57,8 @@ export default function WelcomePage() {
         </h1>
         <p className={styles.subtitle}>
           {language === 'zh'
-            ? 'Andy林浚之的睡前冒险'
-            : "Andy's Bedtime Adventure"}
+            ? 'Andy100层房子大冒险'
+            : "Andy's 100-Floor Adventure"}
         </p>
 
         <motion.button
@@ -69,7 +69,7 @@ export default function WelcomePage() {
         >
           <span className={styles.characterIcon}>🧒</span>
           <span className={styles.characterName}>
-            {language === 'zh' ? 'Andy 林浚之' : 'Andy'}
+            {language === 'zh' ? 'Andy100层房子大冒险' : 'Andy 100-Floor Adventure'}
           </span>
           <span className={styles.selectText}>
             {language === 'zh' ? '选择角色' : 'Select Character'}

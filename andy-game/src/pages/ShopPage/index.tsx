@@ -18,8 +18,6 @@ const SHOP_ITEMS: ShopItem[] = [
   { id: 'andy_glasses', emoji: '🤓', nameZh: 'Andy眼镜', nameEn: 'Andy Glasses', cost: 8, type: 'decoration' },
   { id: 'andy_cape', emoji: '🦸', nameZh: 'Andy披风', nameEn: 'Andy Cape', cost: 15, type: 'decoration' },
   { id: 'elevator_ticket', emoji: '🎫', nameZh: '电梯票 x1', nameEn: 'Elevator Ticket x1', cost: 3, type: 'consumable' },
-  { id: 'room_cat', emoji: '🐱', nameZh: '房间小猫', nameEn: 'Room Cat', cost: 10, type: 'decoration' },
-  { id: 'room_candle', emoji: '🕯️', nameZh: '房间蜡烛', nameEn: 'Room Candle', cost: 10, type: 'decoration' },
 ];
 
 export default function ShopPage() {

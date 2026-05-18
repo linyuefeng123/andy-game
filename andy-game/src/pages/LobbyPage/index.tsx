@@ -19,12 +19,7 @@ function getTodayISO(): string {
 export default function LobbyPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const playerName = useGameStore((s) => s.playerName);
   const language = useGameStore((s) => s.language);
-  const totalStars = useGameStore((s) => s.totalStars);
-  const completedFloors = useGameStore((s) => s.completedFloors);
-  const unlockedFloors = useGameStore((s) => s.unlockedFloors);
-  const collectedRewards = useGameStore((s) => s.collectedRewards);
   const adventurePoints = useGameStore((s) => s.adventurePoints);
   const lastPlayDate = useGameStore((s) => s.lastPlayDate);
   const { elevatorTickets, pressElevator, canUseElevator } = useElevator();
@@ -94,8 +89,6 @@ export default function LobbyPage() {
     setShowMysteryBox(false);
   }, []);
 
-  const completedCount = Object.keys(completedFloors).length;
-
   return (
     <div className={styles.container}>
       {/* Clouds background */}
@@ -108,20 +101,19 @@ export default function LobbyPage() {
       <div className={styles.content}>
         {/* Header */}
         <div className={styles.header}>
-          <div className={styles.playerInfo} onClick={() => navigate('/andy')} style={{ cursor: 'pointer' }}>
+          <div className={styles.playerInfo}>
             <AndyAvatar pose="idle" size={40} />
-            <span className={styles.playerName}>{playerName}</span>
-            <span className={styles.iqBadge}>⚔️ {adventurePoints}</span>
+            <span className={styles.playerName}>
+              {language === 'zh' ? 'Andy100层房子大冒险' : 'Andy 100-Floor Adventure'}
+            </span>
           </div>
-          <div className={styles.stats}>
-            <div className={styles.statItem}>
-              <span>⭐</span>
-              <span>{totalStars}</span>
-            </div>
-            <div className={styles.statItem}>
-              <span>🏠</span>
-              <span>{completedCount}/100</span>
-            </div>
+          <div className={styles.headerRight}>
+            <button className={styles.levelBadge} onClick={() => window.open('https://andygame.zeabur.app/andy', '_blank')}>
+              ⚔️ Lv.{Math.floor(adventurePoints / 30) + 1}
+            </button>
+            <button className={styles.shopIconButton} onClick={() => navigate('/shop')}>
+              🛒
+            </button>
           </div>
         </div>
 
@@ -160,29 +152,14 @@ export default function LobbyPage() {
 
         {/* Bottom buttons */}
         <div className={styles.bottomButtons}>
-          <button className={styles.andyButton} onClick={() => navigate('/andy')}>
-            <span>🧒</span>
-            <span>{language === 'zh' ? `Andy ⚔️${adventurePoints}` : `Andy ⚔️${adventurePoints}`}</span>
-          </button>
           <button className={styles.achieveButton} onClick={() => navigate('/achievements')}>
             <span>🏆</span>
             <span>{language === 'zh' ? '成就' : 'Achieve'}</span>
           </button>
           <button className={styles.mapButton} onClick={() => navigate('/map')}>
-            <span>🗺️</span>
-            <span>{language === 'zh' ? '地图' : 'Map'}</span>
+            <span>🏢</span>
+            <span>{language === 'zh' ? '楼层' : 'Floors'}</span>
           </button>
-          <button className={styles.roomButton} onClick={() => navigate('/room')}>
-            <span>🏠</span>
-            <span>{language === 'zh' ? `小屋 (${collectedRewards.length})` : `Room (${collectedRewards.length})`}</span>
-          </button>
-          <button className={styles.shopButton} onClick={() => navigate('/shop')}>
-            <span>🛒</span>
-            <span>{language === 'zh' ? '商店' : 'Shop'}</span>
-          </button>
-          <div className={styles.floorStatus}>
-            <span>🔓 {unlockedFloors.length}/100</span>
-          </div>
         </div>
       </div>
 

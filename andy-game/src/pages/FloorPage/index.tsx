@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useGameStore } from '../../store/useGameStore';
 import type { FloorReward } from '../../store/useGameStore';
 import ErrorBoundary from '../../components/ErrorBoundary';
-import { getFloorComponent, preloadFloorComponent, getFloorMeta, isFloorImplemented, randomHelper, HELPER_CHARACTERS, type HelperCharacter } from '../../floors/_registry';
+import { getFloorComponent, preloadFloorComponent, getFloorMeta, isFloorImplemented, randomHelper, type HelperCharacter } from '../../floors/_registry';
 import styles from './index.module.css';
 
 const MAX_HELP = 3;
@@ -21,9 +21,7 @@ export default function FloorPage() {
   const [helperChar] = useState<HelperCharacter>(randomHelper);
   const [helpRemaining, setHelpRemaining] = useState(MAX_HELP);
 
-  // Preload floor component synchronously on first render so the import
-  // starts before useEffect fires — gives a head start when arriving from
-  // FloorMapPage (hover preloaded) or ElevatorPage (animation preloaded).
+  // Preload floor component synchronously on first render
   const hasPreloaded = useRef(false);
   if (!hasPreloaded.current && isFloorImplemented(floorNumber)) {
     hasPreloaded.current = true;
@@ -51,9 +49,8 @@ export default function FloorPage() {
     }
   };
 
-  // onConcede is now "skip" — no penalty
   const handleConcede = () => {
-    // Just exit, no negative adventure points
+    // Just exit, no penalty
   };
 
   const handleReplay = () => {
@@ -85,7 +82,6 @@ export default function FloorPage() {
   const FloorComponent = getFloorComponent(floorNumber);
   const story = language === 'zh' ? meta.storyZh : meta.storyEn;
   const bgColor = meta.bgColor;
-  const helper = HELPER_CHARACTERS[helperChar];
   const difficulty = useGameStore.getState().getDifficultyLevel(floorNumber);
   const difficultyLabel = difficulty === 1
     ? (language === 'zh' ? '⭐简单' : '⭐Easy')
@@ -107,15 +103,6 @@ export default function FloorPage() {
             {language === 'zh' ? meta.nameZh : meta.nameEn}
           </h2>
           <p className={styles.storyText}>{story}</p>
-          <div className={styles.helperPreview}>
-            <span className={styles.helperEmoji}>{helper.emoji}</span>
-            <span className={styles.helperName}>
-              {language === 'zh' ? `${helper.nameZh}会帮助你！` : `${helper.nameEn} will help you!`}
-            </span>
-            <span className={styles.helpCount}>
-              {language === 'zh' ? `可帮助 ${MAX_HELP} 次` : `${MAX_HELP} helps available`}
-            </span>
-          </div>
           <button
             className={styles.storyButton}
             onClick={() => setShowStory(false)}
@@ -123,9 +110,7 @@ export default function FloorPage() {
             {language === 'zh' ? '🚪 进入房间' : '🚪 Enter Room'}
           </button>
         </motion.div>
-        {/* Hidden Suspense boundary to warm the lazy component while
-            the user reads the story — eliminates the loading spinner
-            when they tap "Enter Room". */}
+        {/* Hidden Suspense boundary to warm the lazy component */}
         <div style={{ display: 'none' }} aria-hidden="true">
           {FloorComponent && (
             <ErrorBoundary>
@@ -164,21 +149,6 @@ export default function FloorPage() {
         <button className={styles.skipButton} onClick={handleExit}>
           {language === 'zh' ? '⏭️ 跳过' : '⏭️ Skip'}
         </button>
-      </div>
-
-      {/* Helper character bar */}
-      <div className={styles.helperBar}>
-        <span className={styles.helperEmoji}>{helper.emoji}</span>
-        <span className={styles.helperName}>
-          {language === 'zh' ? helper.nameZh : helper.nameEn}
-        </span>
-        <div className={styles.helpDots}>
-          {[1, 2, 3].map((i) => (
-            <span key={i} className={`${styles.helpDot} ${i <= helpRemaining ? styles.helpDotActive : ''}`}>
-              💡
-            </span>
-          ))}
-        </div>
       </div>
 
       <div className={styles.gameArea}>

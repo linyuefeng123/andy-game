@@ -52,7 +52,9 @@ export default function AndyPage() {
         <div className={styles.avatarArea}>
           <AndyAvatar pose="wave" size={80} />
         </div>
-        <h1 className={styles.playerName}>{playerName}</h1>
+        <h1 className={styles.playerName}>
+          {language === 'zh' ? 'Andy100层房子大冒险' : 'Andy 100-Floor Adventure'}
+        </h1>
         <p className={styles.playerTitle} style={{ color }}>{label}</p>
       </motion.div>
 

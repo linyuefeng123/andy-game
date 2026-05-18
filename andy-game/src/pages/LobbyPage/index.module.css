@@ -47,38 +47,39 @@
   gap: var(--space-sm);
 }
 
-.iqBadge {
-  font-size: var(--font-size-sm);
-  background: rgba(77, 150, 255, 0.2);
-  border: 1px solid var(--color-sky);
-  color: var(--color-sky);
-  padding: 2px 8px;
-  border-radius: var(--border-radius-sm);
-  font-weight: 700;
-}
-
-.avatar {
-  font-size: 32px;
-}
-
 .playerName {
   font-size: var(--font-size-md);
   font-weight: 700;
 }
 
-.stats {
-  display: flex;
-  gap: var(--space-md);
-}
-
-.statItem {
+.headerRight {
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
-  font-size: var(--font-size-md);
-  background: rgba(255, 255, 255, 0.1);
+  gap: var(--space-sm);
+}
+
+.levelBadge {
+  font-size: var(--font-size-sm);
+  background: rgba(77, 150, 255, 0.2);
+  border: 1px solid var(--color-sky);
+  color: var(--color-sky);
+  padding: 4px 10px;
+  border-radius: var(--border-radius-sm);
+  font-weight: 700;
+  min-height: var(--touch-target);
+  cursor: pointer;
+}
+
+.shopIconButton {
+  font-size: 24px;
+  background: rgba(255, 107, 107, 0.15);
+  border: 2px solid var(--color-coral);
+  color: var(--color-coral);
   padding: var(--space-xs) var(--space-sm);
   border-radius: var(--border-radius-sm);
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  cursor: pointer;
 }
 
 .houseArea {
@@ -137,20 +138,6 @@
   flex-wrap: wrap;
 }
 
-.andyButton {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-size: var(--font-size-sm);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--border-radius);
-  background: rgba(77, 150, 255, 0.15);
-  border: 2px solid var(--color-sky);
-  color: var(--color-sky);
-  min-height: var(--touch-target);
-  font-weight: 700;
-}
-
 .achieveButton {
   display: flex;
   align-items: center;
@@ -177,40 +164,4 @@
   color: var(--color-sky);
   min-height: var(--touch-target);
   font-weight: 700;
-}
-
-.roomButton {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-size: var(--font-size-sm);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--border-radius);
-  background: rgba(155, 114, 207, 0.15);
-  border: 2px solid var(--color-lavender);
-  color: var(--color-lavender);
-  min-height: var(--touch-target);
-  font-weight: 700;
-}
-
-.shopButton {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-size: var(--font-size-sm);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--border-radius);
-  background: rgba(255, 107, 107, 0.15);
-  border: 2px solid var(--color-coral);
-  color: var(--color-coral);
-  min-height: var(--touch-target);
-  font-weight: 700;
-}
-
-.floorStatus {
-  font-size: var(--font-size-md);
-  color: var(--color-text-muted);
-  background: rgba(255, 255, 255, 0.1);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--border-radius-sm);
 }

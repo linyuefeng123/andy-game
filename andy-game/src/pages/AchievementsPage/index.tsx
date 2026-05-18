@@ -1,10 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGameStore } from '../../store/useGameStore';
-import { getFloorMeta, isFloorImplemented } from '../../floors/_registry';
-import { playSound } from '../../utils/audio';
-import { ACHIEVEMENTS, getAchievementById } from '../../utils/achievements';
+import { ACHIEVEMENTS } from '../../utils/achievements';
 import styles from './index.module.css';
+
+const SHOP_ITEMS_MAP: Record<string, { emoji: string; nameZh: string; nameEn: string; cost: number }> = {
+  andy_hat: { emoji: '🎩', nameZh: 'Andy帽子', nameEn: 'Andy Hat', cost: 5 },
+  andy_glasses: { emoji: '🤓', nameZh: 'Andy眼镜', nameEn: 'Andy Glasses', cost: 8 },
+  andy_cape: { emoji: '🦸', nameZh: 'Andy披风', nameEn: 'Andy Cape', cost: 15 },
+};
 
 export default function AchievementsPage() {
   const navigate = useNavigate();
@@ -14,16 +18,27 @@ export default function AchievementsPage() {
   const collectedRewards = useGameStore((s) => s.collectedRewards);
   const totalStars = useGameStore((s) => s.totalStars);
   const unlockedAchievements = useGameStore((s) => s.unlockedAchievements);
+  const purchasedItems = useGameStore((s) => s.purchasedItems);
 
   const completedCount = Object.keys(completedFloors).length;
+  const totalFloors = 100;
+  const progressPercent = Math.round((completedCount / totalFloors) * 100);
 
-  const handleFloorClick = (floorNum: number) => {
-    const isUnlocked = unlockedFloors.includes(floorNum);
-    const implemented = isFloorImplemented(floorNum);
-    if (!isUnlocked || !implemented) return;
-    playSound('click');
-    navigate(`/floor/${floorNum}`);
-  };
+  // Merge purchased shop items into rewards list
+  const shopRewards = purchasedItems
+    .filter((id) => SHOP_ITEMS_MAP[id])
+    .map((id) => {
+      const item = SHOP_ITEMS_MAP[id];
+      return {
+        emoji: item.emoji,
+        nameZh: item.nameZh,
+        nameEn: item.nameEn,
+        descriptionZh: `商店购买`,
+        descriptionEn: `From Shop`,
+      };
+    });
+
+  const allRewards = [...collectedRewards, ...shopRewards];
 
   return (
     <div className={styles.container}>
@@ -55,10 +70,33 @@ export default function AchievementsPage() {
           </span>
         </div>
         <div className={styles.summaryCard}>
-          <span className={styles.summaryNumber}>{collectedRewards.length}</span>
+          <span className={styles.summaryNumber}>{allRewards.length}</span>
           <span className={styles.summaryLabel}>
             {language === 'zh' ? '收集奖励' : 'Rewards'}
           </span>
+        </div>
+      </div>
+
+      {/* Floor progress bar */}
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>
+          {language === 'zh' ? '🏢 楼层进度' : '🏢 Floor Progress'}
+        </h2>
+        <div className={styles.progressContainer}>
+          <div className={styles.progressBar}>
+            <motion.div
+              className={styles.progressFill}
+              initial={{ width: 0 }}
+              animate={{ width: `${progressPercent}%` }}
+              transition={{ duration: 1, ease: 'easeOut' }}
+            />
+          </div>
+          <div className={styles.progressInfo}>
+            <span className={styles.progressPercent}>{progressPercent}%</span>
+            <span className={styles.progressDetail}>
+              {language === 'zh' ? `${completedCount}/${totalFloors} 楼层` : `${completedCount}/${totalFloors} floors`}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -109,14 +147,14 @@ export default function AchievementsPage() {
         </div>
       </div>
 
-      {/* Reward collection */}
-      {collectedRewards.length > 0 && (
+      {/* All rewards (floor rewards + shop purchases) */}
+      {allRewards.length > 0 && (
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>
             {language === 'zh' ? '🎁 获得的奖励' : '🎁 Collected Rewards'}
           </h2>
           <div className={styles.rewardGrid}>
-            {collectedRewards.map((reward, i) => (
+            {allRewards.map((reward, i) => (
               <motion.div
                 key={i}
                 className={styles.rewardCard}
@@ -136,67 +174,6 @@ export default function AchievementsPage() {
           </div>
         </div>
       )}
-
-      {/* Floor list */}
-      <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>
-          {language === 'zh' ? '🏠 楼层进度' : '🏠 Floor Progress'}
-        </h2>
-        <div className={styles.floorList}>
-          {Array.from({ length: 9 }, (_, i) => i + 1).map((floorNum) => {
-            const meta = getFloorMeta(floorNum);
-            const progress = completedFloors[floorNum];
-            const isUnlocked = unlockedFloors.includes(floorNum);
-            const isCompleted = progress?.completed;
-            const implemented = isFloorImplemented(floorNum);
-            const canEnter = isUnlocked && implemented;
-
-            return (
-              <div
-                key={floorNum}
-                className={`${styles.floorRow} ${!isUnlocked ? styles.locked : ''} ${canEnter ? styles.clickable : ''}`}
-                onClick={() => handleFloorClick(floorNum)}
-              >
-                <div className={styles.floorLeft}>
-                  <span className={styles.floorNum}>{floorNum}F</span>
-                  <span className={styles.floorName}>
-                    {isUnlocked
-                      ? language === 'zh' ? meta.nameZh : meta.nameEn
-                      : '???'}
-                  </span>
-                </div>
-                <div className={styles.floorRight}>
-                  {!isUnlocked && <span className={styles.lockIcon}>🔒</span>}
-                  {isUnlocked && !implemented && (
-                    <span className={styles.statusBuild}>
-                      {language === 'zh' ? '建造中' : 'WIP'}
-                    </span>
-                  )}
-                  {canEnter && !isCompleted && (
-                    <span className={styles.playButton}>
-                      {language === 'zh' ? '▶ 进入' : '▶ Play'}
-                    </span>
-                  )}
-                  {isCompleted && (
-                    <>
-                      <span className={styles.starDisplay}>
-                        {'⭐'.repeat(progress.stars)}
-                      </span>
-                      <span className={styles.rewardBadge}>{meta.reward.emoji}</span>
-                      <span className={styles.playAgain}>
-                        {language === 'zh' ? '▶ 再玩' : '▶ Replay'}
-                      </span>
-                    </>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Suppress unused import warning */}
-      {void getAchievementById}
     </div>
   );
 }

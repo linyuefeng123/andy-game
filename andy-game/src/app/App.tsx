@@ -9,7 +9,6 @@ const LobbyPage = lazy(() => import('../pages/LobbyPage'));
 const ElevatorPage = lazy(() => import('../pages/ElevatorPage'));
 const FloorPage = lazy(() => import('../pages/FloorPage'));
 const AchievementsPage = lazy(() => import('../pages/AchievementsPage'));
-const AndyRoomPage = lazy(() => import('../pages/AndyRoomPage'));
 const FloorMapPage = lazy(() => import('../pages/FloorMapPage'));
 const AndyPage = lazy(() => import('../pages/AndyPage'));
 const ShopPage = lazy(() => import('../pages/ShopPage'));
@@ -57,7 +56,6 @@ export default function App() {
             <Route path="/elevator" element={<ElevatorPage />} />
             <Route path="/floor/:floorId" element={<FloorPage />} />
             <Route path="/achievements" element={<AchievementsPage />} />
-            <Route path="/room" element={<AndyRoomPage />} />
             <Route path="/map" element={<FloorMapPage />} />
             <Route path="/andy" element={<AndyPage />} />
             <Route path="/shop" element={<ShopPage />} />
